@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NutriMind — Smart Diet for Mental Wellness</title>
+<meta name="description" content="AI-powered nutrition intelligence for your mental health. Discover exactly what to eat based on your mood, biomarkers, and unique biology.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════
+   NUTRIMIND — LANDING PAGE
+   Organic Brutalism × Wellness Science
+   ═══════════════════════════════════════════════ */
+:root {
+  --void: #0b0f0e;
+  --deep: #111815;
+  --surface: #161d1a;
+  --card: #1c2622;
+  --raised: #223029;
+  --border: #2d3d35;
+  --border-light: #3d5248;
+
+  --teal: #00c6a2;
+  --teal-dim: #009e82;
+  --teal-glow: rgba(0,198,162,0.15);
+  --amber: #f5a623;
+  --sage: #7ab89a;
+  --coral: #e8735a;
+  --lavender: #9b8ec4;
+
+  --text-primary: #e8f0eb;
+  --text-secondary: #9ab8a8;
+  --text-muted: #587068;
+
+  --radius: 14px;
+  --radius-lg: 22px;
+  --radius-xl: 32px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--void);
+  color: var(--text-primary);
+  overflow-x: hidden;
+}
+
+/* ── AMBIENT BACKGROUND ── */
+.bg-ambient {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+}
+.bg-ambient::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 70% 60% at 15% 10%, rgba(0,198,162,0.07) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 50% at 85% 85%, rgba(245,166,35,0.05) 0%, transparent 55%),
+    radial-gradient(ellipse 40% 40% at 50% 50%, rgba(155,142,196,0.04) 0%, transparent 60%);
+}
+.bg-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(45,61,53,0.2) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(45,61,53,0.2) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+.bg-noise {
+  position: absolute; inset: 0;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+#root { position: relative; z-index: 1; }
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 20px 60px;
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid transparent;
+  transition: all 0.4s ease;
+  backdrop-filter: blur(0px);
+}
+nav.scrolled {
+  background: rgba(11,15,14,0.85);
+  border-bottom-color: var(--border);
+  backdrop-filter: blur(20px);
+}
+
+.nav-logo {
+  display: flex; align-items: center; gap: 10px;
+  text-decoration: none;
+}
+.nav-logo-mark {
+  width: 38px; height: 38px;
+  background: linear-gradient(135deg, var(--teal), var(--sage));
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+  box-shadow: 0 0 24px rgba(0,198,162,0.3);
+}
+.nav-logo-text {
+  font-family: 'Syne', sans-serif; font-weight: 700; font-size: 18px;
+  color: var(--text-primary);
+}
+.nav-logo-text span { color: var(--teal); }
+
+.nav-links {
+  display: flex; align-items: center; gap: 8px;
+}
+.nav-link {
+  padding: 8px 16px;
+  font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 600;
+  color: var(--text-secondary); text-decoration: none;
+  border-radius: 8px; transition: all 0.2s;
+}
+.nav-link:hover { color: var(--text-primary); background: var(--card); }
+
+.nav-cta {
+  padding: 10px 22px;
+  background: linear-gradient(135deg, var(--teal), var(--teal-dim));
+  color: var(--void); border: none; cursor: pointer;
+  font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0,198,162,0.3);
+  transition: all 0.2s; text-decoration: none;
+}
+.nav-cta:hover { transform: translateY(-1px); box-shadow: 0 6px 28px rgba(0,198,162,0.4); }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 120px 60px 80px;
+  text-align: center;
+  position: relative;
+}
+
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 7px 16px; border-radius: 100px;
+  background: rgba(0,198,162,0.1);
+  border: 1px solid rgba(0,198,162,0.25);
+  font-family: 'Syne', sans-serif; font-size: 12px; font-weight: 700;
+  color: var(--teal); letter-spacing: 1.5px; text-transform: uppercase;
+  margin-bottom: 28px;
+  animation: fadeUp 0.7s ease both;
+}
+.eyebrow-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--teal);
+  animation: pulse 2s ease infinite;
+}
+@keyframes pulse {
+  0%,100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+.hero-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(56px, 8vw, 100px);
+  line-height: 1.0;
+  letter-spacing: -2px;
+  margin-bottom: 28px;
+  animation: fadeUp 0.7s ease 0.1s both;
+}
+.hero-title em {
+  color: var(--teal); font-style: italic;
+  position: relative;
+}
+.hero-title .line2 {
+  display: block;
+  background: linear-gradient(135deg, var(--text-primary) 30%, var(--text-muted));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+
+.hero-sub {
+  font-size: 18px; line-height: 1.7;
+  color: var(--text-secondary); max-width: 560px;
+  margin: 0 auto 44px;
+  animation: fadeUp 0.7s ease 0.2s both;
+}
+
+.hero-actions {
+  display: flex; align-items: center; gap: 16px;
+  justify-content: center; flex-wrap: wrap;
+  animation: fadeUp 0.7s ease 0.3s both;
+  margin-bottom: 72px;
+}
+
+.btn-hero {
+  padding: 16px 36px;
+  background: linear-gradient(135deg, var(--teal), var(--teal-dim));
+  color: var(--void); border: none; cursor: pointer;
+  font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700;
+  border-radius: 12px; text-decoration: none;
+  box-shadow: 0 8px 32px rgba(0,198,162,0.35);
+  transition: all 0.25s ease;
+  display: inline-flex; align-items: center; gap: 10px;
+}
+.btn-hero:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(0,198,162,0.45); }
+.btn-hero-outline {
+  padding: 15px 32px;
+  background: transparent;
+  color: var(--text-primary); 
+  border: 1.5px solid var(--border-light); cursor: pointer;
+  font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 600;
+  border-radius: 12px; text-decoration: none;
+  transition: all 0.25s ease;
+  display: inline-flex; align-items: center; gap: 10px;
+}
+.btn-hero-outline:hover { border-color: var(--teal); color: var(--teal); background: var(--teal-glow); }
+
+/* ── FLOATING STATS ── */
+.hero-stats {
+  display: flex; align-items: stretch; gap: 2px;
+  background: var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  animation: fadeUp 0.7s ease 0.4s both;
+  max-width: 640px; width: 100%;
+  margin: 0 auto;
+}
+.hero-stat {
+  flex: 1; padding: 20px 24px;
+  background: var(--card);
+  text-align: center;
+}
+.hero-stat:not(:last-child) { border-right: 1px solid var(--border); }
+.stat-num {
+  font-family: 'DM Serif Display', serif; font-size: 36px;
+  color: var(--teal); display: block; line-height: 1;
+}
+.stat-desc {
+  font-family: 'Syne', sans-serif; font-size: 11px; font-weight: 600;
+  color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.8px;
+  margin-top: 6px; display: block;
+}
+
+/* ── SCROLL INDICATOR ── */
+.scroll-hint {
+  position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  color: var(--text-muted); font-family: 'Syne', sans-serif; font-size: 11px;
+  letter-spacing: 1px; text-transform: uppercase;
+  animation: fadeUp 1s ease 0.8s both;
+}
+.scroll-line {
+  width: 1px; height: 40px;
+  background: linear-gradient(to bottom, var(--teal), transparent);
+  animation: scrollPulse 2s ease infinite;
+}
+@keyframes scrollPulse {
+  0%,100% { opacity: 0.3; transform: scaleY(1); }
+  50% { opacity: 1; transform: scaleY(0.6); }
+}
+
+/* ── SECTION WRAPPER ── */
+section {
+  padding: 100px 60px;
+  max-width: 1240px; margin: 0 auto;
+}
+.section-full { max-width: none; }
+
+.section-eyebrow {
+  font-family: 'Syne', sans-serif; font-size: 11.5px; font-weight: 700;
+  color: var(--teal); letter-spacing: 2px; text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.section-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(36px, 4vw, 56px); line-height: 1.1;
+  letter-spacing: -1px; margin-bottom: 16px;
+}
+.section-title em { color: var(--teal); font-style: italic; }
+.section-sub {
+  color: var(--text-secondary); font-size: 16px; line-height: 1.7;
+  max-width: 520px;
+}
+
+/* ── HOW IT WORKS ── */
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+  background: var(--border);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  margin-top: 56px;
+}
+.step-card {
+  background: var(--card);
+  padding: 36px 28px;
+  position: relative; overflow: hidden;
+  transition: background 0.3s;
+}
+.step-card:hover { background: var(--raised); }
+.step-card::after {
+  content: attr(data-step);
+  position: absolute; right: -12px; top: -16px;
+  font-family: 'DM Serif Display', serif; font-size: 120px;
+  color: rgba(0,198,162,0.04); line-height: 1;
+  pointer-events: none;
+}
+.step-num {
+  font-family: 'Syne', sans-serif; font-size: 12px; font-weight: 700;
+  color: var(--teal); letter-spacing: 1px; margin-bottom: 16px;
+  display: flex; align-items: center; gap: 8px;
+}
+.step-num::after {
+  content: '';
+  flex: 1; height: 1px;
+  background: var(--border-light);
+}
+.step-icon { font-size: 28px; margin-bottom: 16px; display: block; }
+.step-title {
+  font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px;
+  margin-bottom: 10px; color: var(--text-primary);
+}
+.step-desc { font-size: 13.5px; color: var(--text-secondary); line-height: 1.6; }
+
+/* ── FEATURES BENTO ── */
+.bento {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: auto;
+  gap: 14px;
+  margin-top: 56px;
+}
+.bento-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  position: relative; overflow: hidden;
+  transition: all 0.3s ease;
+}
+.bento-card:hover {
+  border-color: var(--border-light);
+  transform: translateY(-2px);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.4);
+}
+.bento-card::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, var(--teal-glow), transparent);
+  opacity: 0; transition: opacity 0.3s;
+}
+.bento-card:hover::before { opacity: 1; }
+
+.b1 { grid-column: span 3; }
+.b2 { grid-column: span 3; }
+.b3 { grid-column: span 2; }
+.b4 { grid-column: span 2; }
+.b5 { grid-column: span 2; }
+.b6 { grid-column: span 4; }
+.b7 { grid-column: span 2; }
+
+.bento-icon { font-size: 32px; margin-bottom: 20px; display: block; }
+.bento-title {
+  font-family: 'Syne', sans-serif; font-weight: 700; font-size: 17px;
+  margin-bottom: 10px;
+}
+.bento-desc { font-size: 13.5px; color: var(--text-secondary); line-height: 1.65; }
+
+/* ── MOOD WHEEL DEMO ── */
+.mood-demo {
+  display: flex; flex-wrap: wrap; gap: 10px;
+  margin-top: 20px;
+}
+.mood-pill {
+  padding: 8px 16px; border-radius: 100px;
+  background: var(--surface); border: 1.5px solid var(--border);
+  font-family: 'Syne', sans-serif; font-size: 12.5px; font-weight: 600;
+  color: var(--text-secondary);
+  display: flex; align-items: center; gap: 6px;
+}
+.mood-pill.active {
+  border-color: var(--teal); background: rgba(0,198,162,0.1);
+  color: var(--teal);
+}
+
+/* ── MINI FOOD CARDS ── */
+.mini-foods {
+  display: flex; flex-direction: column; gap: 8px; margin-top: 16px;
+}
+.mini-food {
+  display: flex; align-items: center; gap: 12px; padding: 10px 14px;
+  background: var(--surface); border-radius: 10px; border: 1px solid var(--border);
+}
+.mini-food-emoji { font-size: 20px; }
+.mini-food-info { flex: 1; }
+.mini-food-name { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 600; }
+.mini-food-sub { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+.mini-score {
+  font-family: 'Syne', sans-serif; font-weight: 700; font-size: 13px;
+  color: var(--teal); background: rgba(0,198,162,0.1);
+  padding: 4px 10px; border-radius: 100px;
+}
+
+/* ── BIOMARKER VISUAL ── */
+.bm-row {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 14px;
+}
+.bm-label { font-family: 'Syne', sans-serif; font-size: 11.5px; color: var(--text-secondary); width: 80px; }
+.bm-track { flex: 1; height: 6px; background: var(--surface); border-radius: 100px; overflow: hidden; }
+.bm-fill { height: 100%; border-radius: 100px; }
+.bm-val { font-family: 'Syne', sans-serif; font-size: 11px; color: var(--text-muted); width: 40px; text-align: right; }
+
+/* ── TESTIMONIALS ── */
+.testimonials-bg {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 100px 0;
+}
+.testimonials-inner {
+  max-width: 1240px; margin: 0 auto; padding: 0 60px;
+}
+.testimonials-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+  margin-top: 56px;
+}
+.testimonial-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 28px;
+}
+.tq { font-size: 40px; color: var(--teal); font-family: 'DM Serif Display', serif; line-height: 1; margin-bottom: 12px; opacity: 0.6; }
+.ttext { font-size: 14.5px; line-height: 1.7; color: var(--text-secondary); margin-bottom: 20px; }
+.tauthor {
+  display: flex; align-items: center; gap: 12px;
+  border-top: 1px solid var(--border); padding-top: 16px;
+}
+.tavatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700; font-family: 'Syne', sans-serif;
+  color: var(--void);
+}
+.tname { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; }
+.trole { font-size: 11.5px; color: var(--text-muted); margin-top: 2px; }
+
+/* ── CTA SECTION ── */
+.cta-section {
+  text-align: center;
+  padding: 120px 60px;
+  max-width: 800px; margin: 0 auto;
+}
+.cta-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(44px, 6vw, 76px);
+  line-height: 1.05; letter-spacing: -2px;
+  margin-bottom: 24px;
+}
+.cta-title em { color: var(--teal); font-style: italic; }
+.cta-sub {
+  font-size: 17px; color: var(--text-secondary); line-height: 1.7;
+  margin-bottom: 44px;
+}
+.cta-badges {
+  display: flex; justify-content: center; flex-wrap: wrap; gap: 12px;
+  margin-top: 32px;
+}
+.cta-badge {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 16px; border-radius: 100px;
+  background: var(--card); border: 1px solid var(--border);
+  font-family: 'Syne', sans-serif; font-size: 12px; font-weight: 600;
+  color: var(--text-secondary);
+}
+.cta-badge span { color: var(--teal); }
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 48px 60px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.footer-note { font-size: 13px; color: var(--text-muted); font-family: 'Syne', sans-serif; }
+.footer-links { display: flex; gap: 24px; }
+.footer-link {
+  font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 600;
+  color: var(--text-muted); text-decoration: none; transition: color 0.2s;
+}
+.footer-link:hover { color: var(--teal); }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.reveal {
+  opacity: 0; transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+
+/* ── GLOW ORB ── */
+.glow-orb {
+  position: absolute; border-radius: 50%;
+  filter: blur(80px); pointer-events: none; opacity: 0.5;
+}
+.orb-teal { background: var(--teal); width: 400px; height: 400px; }
+.orb-amber { background: var(--amber); width: 300px; height: 300px; }
+
+/* ── DISCLAIMER BANNER ── */
+.disclaimer {
+  background: rgba(155,142,196,0.08);
+  border: 1px solid rgba(155,142,196,0.2);
+  padding: 12px 24px;
+  text-align: center;
+  font-family: 'Syne', sans-serif; font-size: 11.5px;
+  color: var(--lavender); letter-spacing: 0.3px;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1024px) {
+  nav { padding: 20px 32px; }
+  .nav-links { display: none; }
+  section { padding: 80px 32px; }
+  .steps-grid { grid-template-columns: repeat(2, 1fr); }
+  .bento { grid-template-columns: repeat(2, 1fr); }
+  .b1,.b2,.b3,.b4,.b5,.b6,.b7 { grid-column: span 1; }
+  .testimonials-grid { grid-template-columns: 1fr; }
+  footer { flex-direction: column; gap: 20px; text-align: center; }
+}
+@media (max-width: 640px) {
+  .hero { padding: 100px 24px 60px; }
+  .hero-stats { flex-direction: column; gap: 0; }
+  .steps-grid { grid-template-columns: 1fr; }
+  section { padding: 60px 24px; }
+}
+
+/* ── COUNTER ANIMATION ── */
+.counter { display: inline-block; }
+</style>
+</head>
+<body>
+
+<div class="bg-ambient">
+  <div class="bg-grid"></div>
+  <div class="bg-noise"></div>
+</div>
+
+<div id="root">
+
+<!-- DISCLAIMER -->
+<div class="disclaimer">
+  🔬 NutriMind is an educational tool. Dietary advice does not replace professional medical consultation.
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-mark">🧠</div>
+    <div>
+      <div class="nav-logo-text">Nutri<span>Mind</span></div>
+    </div>
+  </a>
+  <div class="nav-links">
+    <a href="#how" class="nav-link">How it Works</a>
+    <a href="#features" class="nav-link">Features</a>
+    <a href="#science" class="nav-link">Science</a>
+  </div>
+  <a href="app.html" class="nav-cta">Open App →</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <!-- glow orbs -->
+  <div class="glow-orb orb-teal" style="position:absolute;top:-100px;left:-80px;opacity:0.12;"></div>
+  <div class="glow-orb orb-amber" style="position:absolute;bottom:0;right:-60px;opacity:0.08;"></div>
+
+  <div class="hero-eyebrow">
+    <div class="eyebrow-dot"></div>
+    AI-Powered Nutritional Intelligence
+  </div>
+
+  <h1 class="hero-title">
+    Feed your<br>
+    <em>mind</em>,
+    <span class="line2">not just your body</span>
+  </h1>
+
+  <p class="hero-sub">
+    Discover exactly what to eat based on your mood, biomarkers, and unique biology. 
+    Science-backed food recommendations for optimal mental wellness.
+  </p>
+
+  <div class="hero-actions">
+    <a href="app.html" class="btn-hero">
+      ✦ Start My Profile
+    </a>
+    <a href="#how" class="btn-hero-outline">
+      See how it works
+    </a>
+  </div>
+
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <span class="stat-num counter" data-target="47">0</span><span class="stat-num" style="font-size:24px">+</span>
+      <span class="stat-desc">Mood-mapped foods</span>
+    </div>
+    <div class="hero-stat">
+      <span class="stat-num counter" data-target="12">0</span>
+      <span class="stat-desc">Biomarkers tracked</span>
+    </div>
+    <div class="hero-stat">
+      <span class="stat-num counter" data-target="6">0</span>
+      <span class="stat-desc">Mental states</span>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    Scroll
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="section-eyebrow reveal">The process</div>
+  <h2 class="section-title reveal">Four steps to <em>clarity</em></h2>
+  <p class="section-sub reveal">Your personal nutrition intelligence engine, powered by neuroscience research.</p>
+
+  <div class="steps-grid reveal">
+    <div class="step-card" data-step="01">
+      <div class="step-num">01</div>
+      <span class="step-icon">🧬</span>
+      <div class="step-title">Build Your Profile</div>
+      <div class="step-desc">Enter your age, diet preference, gender, and BMI. NutriMind uses this to calibrate all recommendations.</div>
+    </div>
+    <div class="step-card" data-step="02">
+      <div class="step-num">02</div>
+      <span class="step-icon">🌡️</span>
+      <div class="step-title">Track Your Mood</div>
+      <div class="step-desc">Select your current emotional states — anxious, fatigued, brain fog, or simply thriving. Updated anytime.</div>
+    </div>
+    <div class="step-card" data-step="03">
+      <div class="step-num">03</div>
+      <span class="step-icon">🩸</span>
+      <div class="step-title">Log Biomarkers</div>
+      <div class="step-desc">Optionally add lab values — Vitamin D, B12, Omega-3 index, Iron — to surface deficiency-specific guidance.</div>
+    </div>
+    <div class="step-card" data-step="04">
+      <div class="step-num">04</div>
+      <span class="step-icon">🍽️</span>
+      <div class="step-title">Get Your Plan</div>
+      <div class="step-desc">Receive a personalised meal plan, scored food list, and day-by-day guidance — updated live as you change.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES BENTO -->
+<section id="features">
+  <div class="section-eyebrow reveal">Everything you need</div>
+  <h2 class="section-title reveal">Intelligence built <em>for you</em></h2>
+
+  <div class="bento">
+    <!-- Card 1: Mood Engine -->
+    <div class="bento-card b1 reveal">
+      <span class="bento-icon">🎯</span>
+      <div class="bento-title">Mood-to-Food Engine</div>
+      <div class="bento-desc">Each food is scientifically scored against your selected mental states. Serotonin boosters for low mood, calming magnesium sources for anxiety, dopamine precursors for fatigue.</div>
+      <div class="mood-demo" style="margin-top:24px">
+        <div class="mood-pill active">😔 Low mood</div>
+        <div class="mood-pill active">😰 Anxious</div>
+        <div class="mood-pill">😤 Irritable</div>
+        <div class="mood-pill">🌫️ Brain fog</div>
+        <div class="mood-pill">😴 Fatigued</div>
+      </div>
+    </div>
+
+    <!-- Card 2: Food Scores -->
+    <div class="bento-card b2 reveal reveal-delay-1">
+      <span class="bento-icon">🏆</span>
+      <div class="bento-title">Scored Food Database</div>
+      <div class="bento-desc">Every recommendation comes with a 0–100 mental wellness score, GI index, macros, and a research citation.</div>
+      <div class="mini-foods" style="margin-top:20px">
+        <div class="mini-food">
+          <div class="mini-food-emoji">🐟</div>
+          <div class="mini-food-info">
+            <div class="mini-food-name">Salmon (Wild)</div>
+            <div class="mini-food-sub">Omega-3 · DHA · EPA</div>
+          </div>
+          <div class="mini-score">97</div>
+        </div>
+        <div class="mini-food">
+          <div class="mini-food-emoji">🫐</div>
+          <div class="mini-food-info">
+            <div class="mini-food-name">Blueberries</div>
+            <div class="mini-food-sub">Anthocyanins · BDNF</div>
+          </div>
+          <div class="mini-score">91</div>
+        </div>
+        <div class="mini-food">
+          <div class="mini-food-emoji">🥬</div>
+          <div class="mini-food-info">
+            <div class="mini-food-name">Spinach</div>
+            <div class="mini-food-sub">Folate · Magnesium</div>
+          </div>
+          <div class="mini-score">88</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3: Biomarkers -->
+    <div class="bento-card b3 reveal">
+      <span class="bento-icon">🔬</span>
+      <div class="bento-title">Biomarker Tracking</div>
+      <div class="bento-desc">Connect your lab results for targeted deficiency guidance.</div>
+      <div style="margin-top:20px">
+        <div class="bm-row">
+          <div class="bm-label">Vitamin D</div>
+          <div class="bm-track"><div class="bm-fill" style="width:45%;background:var(--amber)"></div></div>
+          <div class="bm-val" style="color:var(--amber)">Low</div>
+        </div>
+        <div class="bm-row">
+          <div class="bm-label">Omega-3</div>
+          <div class="bm-track"><div class="bm-fill" style="width:78%;background:var(--teal)"></div></div>
+          <div class="bm-val" style="color:var(--teal)">Good</div>
+        </div>
+        <div class="bm-row">
+          <div class="bm-label">B12</div>
+          <div class="bm-track"><div class="bm-fill" style="width:30%;background:var(--coral)"></div></div>
+          <div class="bm-val" style="color:var(--coral)">Low</div>
+        </div>
+        <div class="bm-row">
+          <div class="bm-label">Iron</div>
+          <div class="bm-track"><div class="bm-fill" style="width:60%;background:var(--sage)"></div></div>
+          <div class="bm-val">Okay</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 4: Drug Interactions -->
+    <div class="bento-card b4 reveal reveal-delay-1">
+      <span class="bento-icon">⚠️</span>
+      <div class="bento-title">Drug Interactions</div>
+      <div class="bento-desc">Flag dangerous food-drug combinations — MAOIs, blood thinners, statins — before they become a problem.</div>
+      <div style="margin-top:20px;padding:12px 16px;background:rgba(232,115,90,0.08);border:1px solid rgba(232,115,90,0.2);border-radius:10px;font-size:12.5px;color:#e8a090;line-height:1.6">
+        ⚠️ Warfarin + Spinach — monitor INR. High Vitamin K content may interfere.
+      </div>
+    </div>
+
+    <!-- Card 5: Meal Plan -->
+    <div class="bento-card b5 reveal reveal-delay-2">
+      <span class="bento-icon">📅</span>
+      <div class="bento-title">Daily Meal Plans</div>
+      <div class="bento-desc">Personalised breakfast, lunch, dinner, and snacks — timed for optimal neurotransmitter synthesis.</div>
+    </div>
+
+    <!-- Card 6: Research -->
+    <div class="bento-card b6 reveal">
+      <span class="bento-icon">📚</span>
+      <div class="bento-title">Evidence-Based Science</div>
+      <div class="bento-desc">Every food recommendation is backed by peer-reviewed neuroscience research. We cite our sources, so you can read the evidence yourself. Nutritional psychiatry is a fast-moving field — NutriMind synthesises the latest findings on gut-brain axis, serotonin precursors, inflammation pathways, and neuroplasticity nutrition.</div>
+      <div style="margin-top:20px;display:flex;flex-wrap:wrap;gap:8px">
+        <span style="padding:5px 12px;border-radius:100px;background:rgba(155,142,196,0.1);border:1px solid rgba(155,142,196,0.2);font-family:'Syne',sans-serif;font-size:11px;color:var(--lavender)">Gut-Brain Axis</span>
+        <span style="padding:5px 12px;border-radius:100px;background:rgba(155,142,196,0.1);border:1px solid rgba(155,142,196,0.2);font-family:'Syne',sans-serif;font-size:11px;color:var(--lavender)">Serotonin Synthesis</span>
+        <span style="padding:5px 12px;border-radius:100px;background:rgba(155,142,196,0.1);border:1px solid rgba(155,142,196,0.2);font-family:'Syne',sans-serif;font-size:11px;color:var(--lavender)">Neuroplasticity</span>
+        <span style="padding:5px 12px;border-radius:100px;background:rgba(155,142,196,0.1);border:1px solid rgba(155,142,196,0.2);font-family:'Syne',sans-serif;font-size:11px;color:var(--lavender)">Inflammation Pathways</span>
+        <span style="padding:5px 12px;border-radius:100px;background:rgba(155,142,196,0.1);border:1px solid rgba(155,142,196,0.2);font-family:'Syne',sans-serif;font-size:11px;color:var(--lavender)">Dopamine Precursors</span>
+      </div>
+    </div>
+
+    <!-- Card 7: Recipes -->
+    <div class="bento-card b7 reveal reveal-delay-1">
+      <span class="bento-icon">👨‍🍳</span>
+      <div class="bento-title">Step-by-Step Recipes</div>
+      <div class="bento-desc">Click any food to see preparation tips, timing, and pro chef notes for maximum nutrient retention.</div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS / SCIENCE SECTION -->
+<section id="science" class="section-full testimonials-bg" style="padding:0">
+  <div class="testimonials-inner">
+    <div class="section-eyebrow reveal">What users say</div>
+    <h2 class="section-title reveal">Real <em>results</em>, real people</h2>
+    <p class="section-sub reveal">From students managing anxiety to working professionals fighting brain fog.</p>
+
+    <div class="testimonials-grid">
+      <div class="testimonial-card reveal">
+        <div class="tq">"</div>
+        <div class="ttext">I'd been struggling with afternoon energy crashes for months. NutriMind flagged low B12 and suggested foods I'd never considered. Two weeks in, the difference is remarkable.</div>
+        <div class="tauthor">
+          <div class="tavatar" style="background:linear-gradient(135deg,var(--teal),var(--sage))">P</div>
+          <div>
+            <div class="tname">Priya M.</div>
+            <div class="trole">Software Engineer, Bangalore</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal reveal-delay-1">
+        <div class="tq">"</div>
+        <div class="ttext">As a nutritionist, I was sceptical. But the research citations are solid and the meal plans are genuinely personalised. I now recommend it to clients as a companion tool.</div>
+        <div class="tauthor">
+          <div class="tavatar" style="background:linear-gradient(135deg,var(--amber),var(--coral))">D</div>
+          <div>
+            <div class="tname">Dr. Arjun S.</div>
+            <div class="trole">Clinical Nutritionist</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal reveal-delay-2">
+        <div class="tq">"</div>
+        <div class="ttext">I was dealing with anxiety and couldn't figure out why certain days were worse. Logging my mood and getting the food recommendations made the gut-brain connection real for me.</div>
+        <div class="tauthor">
+          <div class="tavatar" style="background:linear-gradient(135deg,var(--lavender),var(--sky))">R</div>
+          <div>
+            <div class="tname">Riya K.</div>
+            <div class="trole">Post-grad student, Chennai</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div style="text-align:center">
+  <div class="cta-section reveal">
+    <div style="position:relative">
+      <div class="glow-orb orb-teal" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);opacity:0.07;width:600px;height:600px"></div>
+      <h2 class="cta-title">Your brain deserves <em>better</em> fuel</h2>
+      <p class="cta-sub">Start with a 4-minute profile. Get a full personalised meal plan instantly — no sign-up needed.</p>
+      <a href="app.html" class="btn-hero" style="font-size:16px;padding:18px 44px">
+        ✦ Begin My Journey
+      </a>
+      <div class="cta-badges">
+        <div class="cta-badge"><span>✓</span> Free forever</div>
+        <div class="cta-badge"><span>✓</span> No account required</div>
+        <div class="cta-badge"><span>✓</span> Science-backed</div>
+        <div class="cta-badge"><span>✓</span> Works offline</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-note">© 2025 NutriMind · Eat for your mind</div>
+  <div class="footer-links">
+    <a href="app.html" class="footer-link">App</a>
+    <a href="#how" class="footer-link">How it Works</a>
+    <a href="#features" class="footer-link">Features</a>
+  </div>
+</footer>
+
+</div><!-- /#root -->
+
+<script>
+// ── Sticky nav on scroll ──
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 40);
+});
+
+// ── Intersection reveal ──
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ── Counter animation ──
+function animateCounter(el) {
+  const target = parseInt(el.dataset.target);
+  let start = 0;
+  const duration = 1800;
+  const step = (timestamp) => {
+    if (!start) start = timestamp;
+    const progress = Math.min((timestamp - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    el.textContent = Math.round(eased * target);
+    if (progress < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
+const counterObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      animateCounter(e.target);
+      counterObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.5 });
+
+document.querySelectorAll('.counter').forEach(el => counterObs.observe(el));
+
+// ── Smooth scroll for anchor links ──
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+</script>
+</body>
+</html>

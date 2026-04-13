@@ -1,0 +1,1858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NutriMind — Smart Diet for Mental Wellness</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════════
+   NUTRIMIND DESIGN SYSTEM
+   Aesthetic: Organic Brutalism meets Wellness Science
+   Primary palette: Deep teal, warm sand, electric amber, sage green
+   ═══════════════════════════════════════════════════════════════════ */
+:root {
+  --void: #0b0f0e;
+  --deep: #111815;
+  --surface: #161d1a;
+  --card: #1c2622;
+  --raised: #223029;
+  --border: #2d3d35;
+  --border-light: #3d5248;
+
+  --teal: #00c6a2;
+  --teal-dim: #009e82;
+  --teal-glow: rgba(0,198,162,0.15);
+  --amber: #f5a623;
+  --amber-dim: #c4841c;
+  --amber-glow: rgba(245,166,35,0.12);
+  --sage: #7ab89a;
+  --coral: #e8735a;
+  --sky: #5ab4d4;
+  --lavender: #9b8ec4;
+  --rose: #d4778a;
+
+  --text-primary: #e8f0eb;
+  --text-secondary: #9ab8a8;
+  --text-muted: #587068;
+
+  --radius-sm: 8px;
+  --radius: 14px;
+  --radius-lg: 22px;
+  --radius-xl: 32px;
+
+  --shadow: 0 4px 24px rgba(0,0,0,0.4);
+  --glow-teal: 0 0 30px rgba(0,198,162,0.2);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--void);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── ANIMATED BACKGROUND ── */
+.bg-grid {
+  position: fixed; inset: 0; z-index: 0;
+  background-image:
+    radial-gradient(ellipse 60% 50% at 10% 20%, rgba(0,198,162,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 40% at 90% 80%, rgba(245,166,35,0.05) 0%, transparent 60%),
+    linear-gradient(rgba(45,61,53,0.3) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(45,61,53,0.3) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+  pointer-events: none;
+}
+
+#app { position: relative; z-index: 1; }
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--surface); }
+::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 2px; }
+
+/* ═══════════════════════ TYPOGRAPHY ═══════════════════════ */
+.font-display { font-family: 'DM Serif Display', serif; }
+.font-ui { font-family: 'Syne', sans-serif; }
+
+h1,h2,h3 { font-family: 'DM Serif Display', serif; line-height: 1.2; }
+h4,h5,h6,label,button,.badge { font-family: 'Syne', sans-serif; }
+
+/* ═══════════════════════ LAYOUT ═══════════════════════════ */
+.shell {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: 100vh;
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  padding: 28px 16px;
+  position: sticky; top: 0; height: 100vh;
+  display: flex; flex-direction: column;
+  gap: 8px;
+}
+
+.logo {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 12px 24px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 12px;
+}
+
+.logo-mark {
+  width: 36px; height: 36px;
+  background: linear-gradient(135deg, var(--teal), var(--sage));
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+}
+
+.logo-text { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 18px; }
+.logo-sub { font-size: 10px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-family: 'Syne', sans-serif; }
+
+.nav-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 11px 14px;
+  border-radius: var(--radius-sm);
+  cursor: pointer; border: none; background: transparent;
+  color: var(--text-secondary);
+  font-family: 'Syne', sans-serif; font-size: 13.5px; font-weight: 500;
+  width: 100%; text-align: left;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.nav-item:hover { background: var(--card); color: var(--text-primary); }
+.nav-item.active {
+  background: linear-gradient(135deg, rgba(0,198,162,0.15), rgba(0,198,162,0.05));
+  color: var(--teal);
+  border: 1px solid rgba(0,198,162,0.2);
+}
+
+.nav-item .icon { font-size: 16px; width: 20px; text-align: center; }
+
+.sidebar-spacer { flex: 1; }
+
+.user-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+  display: flex; align-items: center; gap: 10px;
+}
+
+.avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--teal-dim), var(--sage));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700; color: var(--void);
+  font-family: 'Syne', sans-serif;
+}
+
+/* ── MAIN CONTENT ── */
+.main {
+  padding: 32px 36px;
+  overflow-y: auto;
+  max-height: 100vh;
+}
+
+/* ── PAGE HEADER ── */
+.page-header {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  margin-bottom: 32px;
+}
+
+.page-title { font-size: 32px; letter-spacing: -0.5px; }
+.page-title span { color: var(--teal); font-style: italic; }
+.page-subtitle { color: var(--text-secondary); font-size: 14px; margin-top: 4px; font-family: 'DM Sans', sans-serif; }
+
+/* ═══════════════════════ COMPONENTS ════════════════════════ */
+
+/* ── CARDS ── */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+}
+
+.card-glass {
+  background: rgba(28,38,34,0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+}
+
+/* ── BUTTONS ── */
+.btn {
+  padding: 11px 22px;
+  border-radius: var(--radius-sm);
+  border: none; cursor: pointer;
+  font-family: 'Syne', sans-serif; font-size: 13.5px; font-weight: 600;
+  transition: all 0.2s ease;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--teal), var(--teal-dim));
+  color: var(--void);
+  box-shadow: 0 4px 20px rgba(0,198,162,0.25);
+}
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 28px rgba(0,198,162,0.35); }
+
+.btn-secondary {
+  background: var(--raised);
+  color: var(--text-primary);
+  border: 1px solid var(--border-light);
+}
+.btn-secondary:hover { background: var(--border); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+}
+.btn-ghost:hover { color: var(--text-primary); border-color: var(--border-light); }
+
+/* ── BADGES ── */
+.badge {
+  padding: 4px 10px; border-radius: 20px;
+  font-size: 11px; font-weight: 600; letter-spacing: 0.5px;
+  display: inline-flex; align-items: center; gap: 4px;
+}
+.badge-teal { background: rgba(0,198,162,0.15); color: var(--teal); border: 1px solid rgba(0,198,162,0.25); }
+.badge-amber { background: rgba(245,166,35,0.15); color: var(--amber); border: 1px solid rgba(245,166,35,0.25); }
+.badge-coral { background: rgba(232,115,90,0.15); color: var(--coral); border: 1px solid rgba(232,115,90,0.25); }
+.badge-sage { background: rgba(122,184,154,0.15); color: var(--sage); border: 1px solid rgba(122,184,154,0.25); }
+.badge-lavender { background: rgba(155,142,196,0.15); color: var(--lavender); border: 1px solid rgba(155,142,196,0.25); }
+
+/* ── INPUTS ── */
+.input {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  padding: 11px 14px;
+  font-family: 'DM Sans', sans-serif; font-size: 14px;
+  width: 100%;
+  transition: border-color 0.2s;
+  outline: none;
+}
+.input:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(0,198,162,0.1); }
+.input::placeholder { color: var(--text-muted); }
+
+select.input { cursor: pointer; }
+
+/* ── PROGRESS BAR ── */
+.progress-bar {
+  background: var(--surface);
+  border-radius: 100px; height: 6px; overflow: hidden;
+}
+.progress-fill {
+  height: 100%; border-radius: 100px;
+  background: linear-gradient(90deg, var(--teal), var(--sage));
+  transition: width 0.8s ease;
+}
+
+/* ── TABS ── */
+.tabs {
+  display: flex; gap: 4px;
+  background: var(--surface);
+  padding: 4px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+.tab {
+  padding: 8px 18px; border-radius: 6px;
+  cursor: pointer; border: none; background: transparent;
+  font-family: 'Syne', sans-serif; font-size: 12.5px; font-weight: 600;
+  color: var(--text-secondary);
+  transition: all 0.2s;
+}
+.tab.active { background: var(--card); color: var(--teal); border: 1px solid rgba(0,198,162,0.2); }
+
+/* ── MOOD CHIP ── */
+.mood-chip {
+  padding: 10px 18px;
+  border-radius: 100px;
+  cursor: pointer; border: 1.5px solid var(--border);
+  background: var(--card);
+  font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 600;
+  color: var(--text-secondary);
+  transition: all 0.25s ease;
+  display: flex; align-items: center; gap: 8px;
+  user-select: none;
+}
+.mood-chip:hover { border-color: var(--border-light); color: var(--text-primary); transform: translateY(-1px); }
+.mood-chip.selected {
+  border-color: var(--teal);
+  background: rgba(0,198,162,0.1);
+  color: var(--teal);
+  box-shadow: 0 0 0 3px rgba(0,198,162,0.07);
+}
+
+/* ── GI INDICATOR ── */
+.gi-pill {
+  padding: 3px 9px; border-radius: 100px;
+  font-size: 11px; font-weight: 700; font-family: 'Syne', sans-serif;
+}
+.gi-low { background: rgba(0,198,162,0.15); color: var(--teal); }
+.gi-medium { background: rgba(245,166,35,0.15); color: var(--amber); }
+.gi-high { background: rgba(232,115,90,0.15); color: var(--coral); }
+
+/* ── FOOD CARD ── */
+.food-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+  transition: all 0.25s ease;
+  cursor: pointer;
+  position: relative; overflow: hidden;
+}
+.food-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--teal), var(--sage));
+  opacity: 0; transition: opacity 0.25s;
+}
+.food-card:hover { border-color: var(--border-light); transform: translateY(-2px); box-shadow: var(--shadow); }
+.food-card:hover::before { opacity: 1; }
+
+.food-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+.food-meta { font-size: 12px; color: var(--text-muted); margin-bottom: 10px; }
+.food-macros { display: flex; gap: 10px; flex-wrap: wrap; }
+.macro-pill {
+  padding: 3px 8px; border-radius: 6px;
+  background: var(--surface); border: 1px solid var(--border);
+  font-size: 11px; font-family: 'Syne', sans-serif; font-weight: 600;
+  color: var(--text-secondary);
+}
+
+/* ── SCORE BAR ── */
+.score-ring {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: conic-gradient(var(--teal) var(--pct), var(--surface) var(--pct));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; font-family: 'Syne', sans-serif;
+  color: var(--teal); position: relative;
+}
+.score-ring::before {
+  content: ''; position: absolute;
+  width: 34px; height: 34px; border-radius: 50%;
+  background: var(--card);
+}
+.score-ring span { position: relative; z-index: 1; }
+
+/* ── STAT BOX ── */
+.stat-box {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  display: flex; flex-direction: column; gap: 4px;
+}
+.stat-label { font-size: 11.5px; color: var(--text-muted); font-family: 'Syne', sans-serif; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; }
+.stat-value { font-family: 'DM Serif Display', serif; font-size: 32px; }
+.stat-delta { font-size: 12px; font-family: 'Syne', sans-serif; }
+.delta-pos { color: var(--teal); }
+.delta-neg { color: var(--coral); }
+
+/* ── MEAL TIMELINE ── */
+.timeline {
+  position: relative;
+  padding-left: 28px;
+}
+.timeline::before {
+  content: '';
+  position: absolute; left: 10px; top: 12px; bottom: 12px;
+  width: 1px; background: linear-gradient(to bottom, var(--teal), transparent);
+}
+.timeline-item { margin-bottom: 24px; position: relative; }
+.timeline-dot {
+  position: absolute; left: -22px; top: 16px;
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--teal);
+  box-shadow: 0 0 8px rgba(0,198,162,0.6);
+}
+
+/* ── BIOMARKER CARD ── */
+.biomarker-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+.biomarker-bar {
+  height: 8px; border-radius: 100px;
+  background: var(--surface); margin: 10px 0;
+  position: relative; overflow: visible;
+}
+.bm-fill {
+  height: 100%; border-radius: 100px;
+  position: absolute; top: 0; left: 0;
+  transition: width 1s ease;
+}
+.bm-marker {
+  position: absolute; top: -3px; height: 14px; width: 3px;
+  border-radius: 2px;
+}
+
+/* ── ALERT BOX ── */
+.alert {
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+  display: flex; align-items: flex-start; gap: 12px;
+  font-size: 13.5px;
+}
+.alert-warn {
+  background: rgba(245,166,35,0.08);
+  border: 1px solid rgba(245,166,35,0.25);
+  color: #e8c97a;
+}
+.alert-info {
+  background: rgba(0,198,162,0.08);
+  border: 1px solid rgba(0,198,162,0.2);
+  color: var(--text-secondary);
+}
+.alert-danger {
+  background: rgba(232,115,90,0.08);
+  border: 1px solid rgba(232,115,90,0.25);
+  color: #e8a090;
+}
+
+/* ── GRID HELPERS ── */
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.grid-auto { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
+
+.flex { display: flex; }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.gap-2 { gap: 8px; }
+.gap-3 { gap: 12px; }
+.gap-4 { gap: 16px; }
+.flex-wrap { flex-wrap: wrap; }
+.flex-1 { flex: 1; }
+
+.mt-1 { margin-top: 4px; }
+.mt-2 { margin-top: 8px; }
+.mt-3 { margin-top: 12px; }
+.mt-4 { margin-top: 16px; }
+.mt-6 { margin-top: 24px; }
+.mt-8 { margin-top: 32px; }
+.mb-1 { margin-bottom: 4px; }
+.mb-2 { margin-bottom: 8px; }
+.mb-3 { margin-bottom: 12px; }
+.mb-4 { margin-bottom: 16px; }
+.mb-6 { margin-bottom: 24px; }
+
+.text-sm { font-size: 13px; }
+.text-xs { font-size: 11.5px; }
+.text-muted { color: var(--text-muted); }
+.text-secondary { color: var(--text-secondary); }
+.text-teal { color: var(--teal); }
+.text-amber { color: var(--amber); }
+.text-coral { color: var(--coral); }
+.font-bold { font-weight: 700; }
+.text-right { text-align: right; }
+
+.divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
+
+/* ═══════════════════ ONBOARDING ═══════════════════════════ */
+.onboarding {
+  min-height: 100vh;
+  display: flex; align-items: stretch;
+}
+.ob-left {
+  width: 420px; flex-shrink: 0;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  padding: 48px 40px;
+  display: flex; flex-direction: column; justify-content: center;
+}
+.ob-right {
+  flex: 1;
+  padding: 40px 48px;
+  display: flex; flex-direction: column; justify-content: center;
+  overflow-y: auto;
+}
+
+.ob-step-indicator {
+  display: flex; gap: 8px; margin-bottom: 40px;
+}
+.ob-step {
+  height: 3px; flex: 1; border-radius: 100px;
+  background: var(--border);
+  transition: background 0.3s;
+}
+.ob-step.done { background: var(--teal); }
+.ob-step.active { background: linear-gradient(90deg, var(--teal), var(--sage)); }
+
+.ob-number {
+  font-family: 'Syne', sans-serif; font-size: 11px; font-weight: 700;
+  color: var(--teal); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px;
+}
+.ob-title { font-family: 'DM Serif Display', serif; font-size: 38px; line-height: 1.15; margin-bottom: 16px; }
+.ob-title em { color: var(--teal); font-style: italic; }
+.ob-desc { color: var(--text-secondary); line-height: 1.7; font-size: 15px; }
+
+.form-group { margin-bottom: 20px; }
+.form-label {
+  display: block; font-family: 'Syne', sans-serif; font-size: 12px; font-weight: 600;
+  color: var(--text-secondary); letter-spacing: 0.8px; text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+/* ═══════════════════ ANIMATIONS ══════════════════════════ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse-ring {
+  0%,100% { box-shadow: 0 0 0 0 rgba(0,198,162,0.4); }
+  50% { box-shadow: 0 0 0 8px rgba(0,198,162,0); }
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-up { animation: fadeUp 0.5s ease both; }
+.animate-up-delay-1 { animation: fadeUp 0.5s ease 0.1s both; }
+.animate-up-delay-2 { animation: fadeUp 0.5s ease 0.2s both; }
+
+.loading-spinner {
+  width: 32px; height: 32px; border-radius: 50%;
+  border: 3px solid var(--border);
+  border-top-color: var(--teal);
+  animation: spin 0.8s linear infinite;
+}
+
+/* ═══════════════════ FOOD DETAIL MODAL ═══════════════════ */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px;
+}
+.modal {
+  background: var(--card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl);
+  padding: 32px;
+  max-width: 560px; width: 100%;
+  max-height: 90vh; overflow-y: auto;
+  animation: fadeUp 0.3s ease;
+}
+
+/* ═══════════════════ CHART STYLES ═══════════════════════ */
+.radar-chart { display: flex; justify-content: center; }
+.nutrient-bar-row {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 12px;
+}
+.nutrient-bar-label { width: 120px; font-size: 12px; color: var(--text-secondary); font-family: 'Syne', sans-serif; }
+.nutrient-bar-track { flex: 1; height: 8px; background: var(--surface); border-radius: 100px; overflow: hidden; }
+.nutrient-bar-fill { height: 100%; border-radius: 100px; transition: width 1s ease; }
+.nutrient-bar-val { width: 40px; font-size: 11px; color: var(--text-muted); text-align: right; font-family: 'Syne', sans-serif; }
+
+/* ═══════════════════ SCROLLABLE REGIONS ═════════════════ */
+.scroll-x { overflow-x: auto; padding-bottom: 8px; }
+.scroll-x::-webkit-scrollbar { height: 3px; }
+
+/* ═══════════════════ AVOID FOODS PANEL ═════════════════ */
+.avoid-chip {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 14px; border-radius: var(--radius-sm);
+  background: rgba(232,115,90,0.08);
+  border: 1px solid rgba(232,115,90,0.2);
+  font-size: 13px; color: #e8a090; font-family: 'Syne', sans-serif;
+}
+
+/* ═══════════════════ RESEARCH TAG ══════════════════════ */
+.research-tag {
+  background: rgba(155,142,196,0.08);
+  border: 1px solid rgba(155,142,196,0.2);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  font-size: 12px; color: var(--lavender);
+  line-height: 1.5;
+}
+.research-tag strong { color: #bfb3e0; }
+
+/* ═══════════════════ RESPONSIVE ════════════════════════ */
+@media (max-width: 900px) {
+  .shell { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  .grid-4 { grid-template-columns: repeat(2,1fr); }
+  .ob-left { display: none; }
+}
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<div id="app"></div>
+
+<script>
+// ════════════════════════════════════════════════════════════════════
+// NUTRIMIND — COMPLETE PROTOTYPE
+// Data: 150+ foods, 8 biomarkers, drug interactions, full meal planner
+// ════════════════════════════════════════════════════════════════════
+
+// ── EMBEDDED DATABASE (subset of full 150-food dataset) ──────────────
+const FOODS_DB = [
+  // Vegetables
+  { id:"f001", name:"Spinach (Palak)", cat:"vegetable", emoji:"🌿", diet:["vegetarian","vegan","eggetarian","non-vegetarian"], cal:23, pro:2.9, carb:3.6, fat:0.4, fib:2.2, gi:15, mood_boost:["depressed","fatigued","brain_fog"], mood_avoid:[], key_nutrients:["Iron","Folate","Magnesium"], avoid_if:["kidney_stones"], drug_int:null, research:"High folate critical for SAM-e production; low folate linked to depression (Bottiglieri 2013)" },
+  { id:"f002", name:"Sweet Potato", cat:"vegetable", emoji:"🍠", diet:["vegetarian","vegan","eggetarian","non-vegetarian"], cal:86, pro:1.6, carb:20, fat:0.1, fib:3, gi:44, mood_boost:["depressed","stressed","fatigued"], mood_avoid:[], key_nutrients:["Beta-Carotene","B6","Potassium"], avoid_if:["diabetes_uncontrolled"], drug_int:null, research:"Complex carbs maintain serotonin; beta-carotene reduces oxidative stress" },
+  { id:"f003", name:"Broccoli", cat:"vegetable", emoji:"🥦", diet:["vegetarian","vegan","eggetarian","non-vegetarian"], cal:34, pro:2.8, carb:6.6, fat:0.4, fib:2.6, gi:15, mood_boost:["brain_fog","depressed","anxious"], mood_avoid:[], key_nutrients:["Sulforaphane","Vitamin C","Folate"], avoid_if:["hypothyroid_unmedicated"], drug_int:"warfarin", research:"Sulforaphane activates Nrf2 pathway — anti-neuroinflammatory (Thimmulappa 2002)" },
+  { id:"f004", name:"Beetroot (Chukandar)", cat:"vegetable", emoji:"🫚", diet:["vegetarian","vegan","eggetarian","non-vegetarian"], cal:43, pro:1.6, carb:10, fat:0.2, fib:2.8, gi:64, mood_boost:["depressed","fatigued","brain_fog"], mood_avoid:[], key_nutrients:["Nitrates","Betaine","Folate"], avoid_if:["kidney_stones"], drug_int:null, research:"Dietary nitrates improve cerebral blood flow; betaine is methyl donor for SAM-e" },
+  { id:"f005", name:"Moringa Leaves", cat:"vegetable", emoji:"🌱", diet:["vegetarian","vegan","eggetarian","non-vegetarian"], cal:64, pro:9.4, carb:8.3, fat:1.4, fib:2, gi:20, mood_boost:["fatigued","depressed","anxious","stressed"], mood_avoid:[], key_nutrients:["Iron","Calcium","Magnesium","Vitamin C"], avoid_if:["pregnancy_high_dose"], drug_int:"thyroid_medication", research:"Adaptogenic; highest plant source of complete amino acids in South Asian diet (ICMR-NIN 2017)" },
+  { id:"f006", name:"Tomato", cat:"vegetable", emoji:"🍅", diet:["vegetarian","vegan","eggetarian","non-vegetarian"], cal:18, pro:0.9, carb:3.9, fat:0.2, fib:1.2, gi:30, mood_boost:["brain_fog","stressed"], mood_avoid:[], key_nutrients:["Lycopene","Vitamin C","Folate"], avoid_if:["acid_reflux_severe"], drug_int:null, research:"Lycopene reduces IL-6 neuroinflammatory marker (Rao 2007)" },
+  { id:"f007", name:"Amla (Indian Gooseberry)", cat:"vegetable", emoji:"🫒", diet:["vegetarian","vegan","eggetarian","non-vegetarian"], cal:44, pro:0.9, carb:10, fat:0.6, fib:4.3, gi:25, mood_boost:["stressed","brain_fog","anxious"], mood_avoid:[], key_nutrients:["Vitamin C (600mg)","Tannins","Antioxidants"], avoid_if:[], drug_int:"blood_thinners", research:"Highest vitamin C in South Asian diet; reduces cortisol oxidative damage" },
+  { id:"f008", name:"Methi (Fenugreek)", cat:"vegetable", emoji:"🌿", diet:["vegetarian","vegan","eggetarian","non-vegetarian"], cal:49, pro:4.4, carb:6, fat:0.9, fib:2.7, gi:25, mood_boost:["fatigued","irritable","depressed"], mood_avoid:[], key_nutrients:["Iron","Folate","Calcium"], avoid_if:[], drug_int:"blood_thinners", research:"4-hydroxyisoleucine modulates insulin sensitivity — stabilises mood via blood sugar" },
+  // Fruits
+  { id:"f009", name:"Banana", cat:"fruit", emoji:"🍌", diet:["vegetarian","vegan","eggetarian","non-vegetarian"], cal:89, pro:1.1, carb:23, fat:0.3, fib:2.6, gi:51, mood_boost:["depressed","irritable","stressed"], mood_avoid:["anxious"], key_nutrients:["B6","Tryptophan","Potassium"], avoid_if:["diabetes_uncontrolled"], drug_int:"maois", research:"B6 is essential co-factor for serotonin synthesis from tryptophan (Baldewicz 1998)" },
+  { id:"f010", name:"Blueberries", cat:"fruit", emoji:"🫐", diet:["vegetarian","vegan","eggetarian","non-vegetarian"], cal:57, pro:0.7, carb:14, fat:0.3, fib:2.4, gi:53, mood_boost:["brain_fog","depressed","stressed"], mood_avoid:[], key_nutrients:["Anthocyanins","Vitamin C","Polyphenols"], avoid_if:[], drug_int:null, research:"Anthocyanins cross BBB; improve BDNF and hippocampal neurogenesis (Rendeiro 2012)" },
+  { id:"f011", name:"Avocado", cat:"fruit", emoji:"🥑", diet:["vegetarian","vegan","eggetarian","non-vegetarian"], cal:160, pro:2, carb:9, fat:15, fib:7, gi:15, mood_boost:["anxious","depressed","brain_fog"], mood_avoid:[], key_nutrients:["Folate","Potassium","Healthy Fats","B6"], avoid_if:["latex_allergy"], drug_int:"warfarin", research:"Folate + healthy fats combination uniquely supports myelin sheath & serotonin pathway" },
+  { id:"f012", name:"Pomegranate (Anar)", cat:"fruit", emoji:"🍎", diet:["vegetarian","vegan","eggetarian","non-vegetarian"], cal:83, pro:1.7, carb:19, fat:1.2, fib:4, gi:35, mood_boost:["brain_fog","depressed","stressed"], mood_avoid:[], key_nutrients:["Punicalagins","Vitamin C","Folate"], avoid_if:[], drug_int:"statins", research:"Punicalagins reduce TNF-α and IL-6; linked to improved memory in RCT (Bookheimer 2013)" },
+  { id:"f013", name:"Kiwi", cat:"fruit", emoji:"🥝", diet:["vegetarian","vegan","eggetarian","non-vegetarian"], cal:61, pro:1.1, carb:15, fat:0.5, fib:3, gi:52, mood_boost:["depressed","fatigued","anxious"], mood_avoid:[], key_nutrients:["Vitamin C","Dietary Serotonin","Folate"], avoid_if:["latex_allergy"], drug_int:null, research:"Only fruit with measurable dietary serotonin; improves sleep onset by 35% (Lin 2011)" },
+  { id:"f014", name:"Dates (Khajur)", cat:"fruit", emoji:"🫘", diet:["vegetarian","vegan","eggetarian","non-vegetarian"], cal:277, pro:1.8, carb:75, fat:0.2, fib:6.7, gi:42, mood_boost:["fatigued","depressed","irritable"], mood_avoid:["anxious"], key_nutrients:["Iron","Magnesium","Tryptophan"], avoid_if:["diabetes_uncontrolled"], drug_int:null, research:"Natural tryptophan + iron; traditional Iftar food shown to reduce fatigue" },
+  // Grains
+  { id:"f015", name:"Oats (Rolled)", cat:"grain", emoji:"🥣", diet:["vegetarian","vegan","eggetarian","non-vegetarian"], cal:389, pro:17, carb:66, fat:7, fib:10.6, gi:55, mood_boost:["stressed","depressed","anxious","irritable"], mood_avoid:[], key_nutrients:["Beta-Glucan","Magnesium","Iron","B-Vitamins"], avoid_if:["celiac_disease"], drug_int:null, research:"Beta-glucan slows glucose absorption; avenanthramides reduce neuroinflammation" },
+  { id:"f016", name:"Brown Rice", cat:"grain", emoji:"🍚", diet:["vegetarian","vegan","eggetarian","non-vegetarian"], cal:216, pro:5, carb:45, fat:1.8, fib:3.5, gi:50, mood_boost:["depressed","irritable","fatigued"], mood_avoid:[], key_nutrients:["GABA","Magnesium","B1","Selenium"], avoid_if:[], drug_int:null, research:"GABA content 10x white rice; IP6 in bran reduces neuroinflammatory markers" },
+  { id:"f017", name:"Quinoa", cat:"grain", emoji:"🌾", diet:["vegetarian","vegan","eggetarian","non-vegetarian"], cal:222, pro:8.1, carb:39, fat:3.6, fib:5.2, gi:53, mood_boost:["depressed","anxious","brain_fog"], mood_avoid:[], key_nutrients:["Complete Protein","Magnesium","Tryptophan","Folate"], avoid_if:[], drug_int:null, research:"Complete protein with all 9 EAAs; uniquely contains tryptophan for serotonin synthesis" },
+  { id:"f018", name:"Ragi (Finger Millet)", cat:"grain", emoji:"🌾", diet:["vegetarian","vegan","eggetarian","non-vegetarian"], cal:328, pro:7.3, carb:72, fat:1.3, fib:3.6, gi:68, mood_boost:["depressed","fatigued","anxious"], mood_avoid:[], key_nutrients:["Calcium (344mg)","Tryptophan","Iron"], avoid_if:[], drug_int:null, research:"Highest calcium of any grain; tryptophan → serotonin (ICMR-NIN 2017)" },
+  { id:"f019", name:"Jowar (Sorghum)", cat:"grain", emoji:"🌾", diet:["vegetarian","vegan","eggetarian","non-vegetarian"], cal:329, pro:10.6, carb:72, fat:3.5, fib:6.3, gi:62, mood_boost:["fatigued","depressed","stressed"], mood_avoid:[], key_nutrients:["Iron","B3","B6","Magnesium"], avoid_if:[], drug_int:null, research:"Gluten-free; 3-deoxyanthocyanins are uniquely stable antioxidants" },
+  { id:"f020", name:"Whole Wheat Chapati", cat:"grain", emoji:"🫓", diet:["vegetarian","eggetarian","non-vegetarian"], cal:120, pro:3.5, carb:22, fat:2, fib:2.5, gi:62, mood_boost:["depressed","irritable","fatigued"], mood_avoid:[], key_nutrients:["B1","Iron","Magnesium","Selenium"], avoid_if:["celiac_disease"], drug_int:null, research:"Whole grain diet pattern: strongest dietary predictor of reduced depression risk (Jacka 2010)" },
+  // Legumes
+  { id:"f021", name:"Masoor Dal (Red Lentils)", cat:"legume", emoji:"🍛", diet:["vegetarian","vegan","eggetarian","non-vegetarian"], cal:230, pro:17.9, carb:40, fat:0.8, fib:7.9, gi:21, mood_boost:["depressed","fatigued","anxious"], mood_avoid:[], key_nutrients:["Folate (358µg)","Iron","Tryptophan","Zinc"], avoid_if:["ibs_fodmap"], drug_int:null, research:"Highest folate in Indian kitchen; folate deficiency in 65% of Indian depression cases (NIMHANS 2019)" },
+  { id:"f022", name:"Moong Dal (Green Gram)", cat:"legume", emoji:"🟢", diet:["vegetarian","vegan","eggetarian","non-vegetarian"], cal:347, pro:23.9, carb:63, fat:1.2, fib:16.3, gi:25, mood_boost:["depressed","anxious","fatigued","stressed"], mood_avoid:[], key_nutrients:["Folate (625µg)","Magnesium","GABA (sprouted)","Tryptophan"], avoid_if:[], drug_int:null, research:"Highest folate Indian dal; sprouting increases GABA 400% (Kim 2015)" },
+  { id:"f023", name:"Rajma (Kidney Beans)", cat:"legume", emoji:"🫘", diet:["vegetarian","vegan","eggetarian","non-vegetarian"], cal:347, pro:23.6, carb:61, fat:1.5, fib:11.4, gi:29, mood_boost:["depressed","fatigued","brain_fog"], mood_avoid:[], key_nutrients:["Iron","Molybdenum","Folate","Potassium"], avoid_if:["ibs_fodmap"], drug_int:null, research:"High molybdenum supports sulphite oxidase — deficiency linked to anxiety (Schwarz 2009)" },
+  { id:"f024", name:"Chana Dal (Bengal Gram)", cat:"legume", emoji:"🟡", diet:["vegetarian","vegan","eggetarian","non-vegetarian"], cal:364, pro:22.5, carb:57, fat:5, fib:17.4, gi:27, mood_boost:["depressed","anxious","brain_fog","fatigued"], mood_avoid:[], key_nutrients:["Choline","Iron","Tryptophan","B6"], avoid_if:["ibs_fodmap"], drug_int:null, research:"Choline precursor for acetylcholine — critical for memory; low GI prevents mood crashes" },
+  // Nuts & Seeds
+  { id:"f025", name:"Walnuts", cat:"nut", emoji:"🫘", diet:["vegetarian","vegan","eggetarian","non-vegetarian"], cal:654, pro:15.2, carb:14, fat:65, fib:6.7, gi:15, mood_boost:["depressed","brain_fog","anxious","stressed"], mood_avoid:[], key_nutrients:["Omega-3 (9.1g ALA)","Magnesium","Polyphenols"], avoid_if:["tree_nut_allergy"], drug_int:null, research:"Walnut consumers had 26% lower depression odds in cross-sectional study (Rao 2019)" },
+  { id:"f026", name:"Almonds (Badam)", cat:"nut", emoji:"🫘", diet:["vegetarian","vegan","eggetarian","non-vegetarian"], cal:579, pro:21.2, carb:22, fat:50, fib:12.5, gi:0, mood_boost:["stressed","anxious","depressed","brain_fog"], mood_avoid:[], key_nutrients:["Vitamin E (25mg)","Magnesium","Tryptophan"], avoid_if:["tree_nut_allergy"], drug_int:null, research:"Highest vitamin E nut; magnesium + E combo reduces HPA axis stress response" },
+  { id:"f027", name:"Pumpkin Seeds (Kaddu beej)", cat:"seed", emoji:"🌰", diet:["vegetarian","vegan","eggetarian","non-vegetarian"], cal:559, pro:30.2, carb:11, fat:49, fib:6, gi:25, mood_boost:["anxious","depressed","stressed","brain_fog"], mood_avoid:[], key_nutrients:["Zinc (7.8mg)","Tryptophan (0.58g)","Magnesium"], avoid_if:[], drug_int:null, research:"Highest tryptophan density per gram; zinc deficiency in 40% of anxiety patients" },
+  { id:"f028", name:"Chia Seeds", cat:"seed", emoji:"⚫", diet:["vegetarian","vegan","eggetarian","non-vegetarian"], cal:486, pro:16.5, carb:42.1, fat:30.7, fib:34.4, gi:1, mood_boost:["depressed","anxious","stressed","brain_fog","fatigued"], mood_avoid:[], key_nutrients:["Omega-3 (17.8g)","Calcium","Magnesium","Tryptophan"], avoid_if:[], drug_int:"blood_pressure_medication", research:"Highest omega-3:omega-6 ratio (1:0.3) of all seeds — ideal anti-inflammatory" },
+  { id:"f029", name:"Flaxseeds (Alsi)", cat:"seed", emoji:"🟤", diet:["vegetarian","vegan","eggetarian","non-vegetarian"], cal:534, pro:18.3, carb:28.9, fat:42.2, fib:27.3, gi:35, mood_boost:["depressed","anxious","stressed","brain_fog"], mood_avoid:[], key_nutrients:["ALA Omega-3 (22.8g)","Lignans","Magnesium"], avoid_if:["estrogen_sensitive_cancer"], drug_int:"blood_thinners", research:"Highest plant ALA omega-3; lignans modulate estrogen — menstrual mood changes" },
+  // Dairy & Eggs
+  { id:"f030", name:"Whole Eggs", cat:"protein", emoji:"🥚", diet:["eggetarian","non-vegetarian"], cal:143, pro:12.6, carb:0.7, fat:9.5, fib:0, gi:0, mood_boost:["depressed","brain_fog","fatigued","anxious"], mood_avoid:[], key_nutrients:["Choline (251mg)","B12","Vitamin D","Selenium"], avoid_if:["egg_allergy"], drug_int:"maois", research:"Only food covering 50% DV choline in single serving; critical for acetylcholine & myelin" },
+  { id:"f031", name:"Greek Yogurt", cat:"dairy", emoji:"🥛", diet:["vegetarian","eggetarian","non-vegetarian"], cal:59, pro:10.2, carb:3.6, fat:0.4, fib:0, gi:11, mood_boost:["anxious","depressed","irritable"], mood_avoid:[], key_nutrients:["Probiotics (1B CFU)","Calcium","B12","Tryptophan"], avoid_if:["lactose_intolerance"], drug_int:"antibiotics", research:"Probiotics modulate gut-brain axis; 8-week RCT reduced anxiety scores (Mayer 2014)" },
+  { id:"f032", name:"Paneer (Cottage Cheese)", cat:"dairy", emoji:"🧀", diet:["vegetarian","eggetarian"], cal:265, pro:18.3, carb:1.2, fat:20.8, fib:0, gi:0, mood_boost:["depressed","fatigued","anxious"], mood_avoid:[], key_nutrients:["Calcium","Tryptophan","B12","Casein Protein"], avoid_if:["lactose_intolerance"], drug_int:null, research:"Complete protein; casein slow-release prevents nocturnal tryptophan dips" },
+  // Fish & Meat
+  { id:"f033", name:"Salmon", cat:"fish", emoji:"🐟", diet:["non-vegetarian"], cal:208, pro:20.4, carb:0, fat:13.4, fib:0, gi:0, mood_boost:["depressed","brain_fog","anxious","stressed"], mood_avoid:[], key_nutrients:["EPA+DHA (2.3g)","Vitamin D","B12","Astaxanthin"], avoid_if:["fish_allergy"], drug_int:"blood_thinners", research:"Meta-analysis: omega-3 ≥1g/day reduces depression symptoms significantly (Sublette 2011)" },
+  { id:"f034", name:"Rohu Fish (Indian Carp)", cat:"fish", emoji:"🐠", diet:["non-vegetarian"], cal:97, pro:17.6, carb:0, fat:2.7, fib:0, gi:0, mood_boost:["depressed","fatigued","brain_fog"], mood_avoid:[], key_nutrients:["DHA","B12","Selenium","Iodine"], avoid_if:["fish_allergy"], drug_int:null, research:"Most accessible DHA source in Indian market; B12 critical for anemia-related fatigue" },
+  { id:"f035", name:"Chicken Breast", cat:"meat", emoji:"🍗", diet:["non-vegetarian"], cal:165, pro:31, carb:0, fat:3.6, fib:0, gi:0, mood_boost:["depressed","fatigued","brain_fog"], mood_avoid:[], key_nutrients:["Tryptophan (0.38g)","B3","B6","Selenium"], avoid_if:[], drug_int:null, research:"Highest tryptophan/calorie ratio of lean meats; B6 ensures conversion to serotonin" },
+  // Spices & Herbs
+  { id:"f036", name:"Turmeric + Black Pepper", cat:"spice", emoji:"🌶️", diet:["vegetarian","vegan","eggetarian","non-vegetarian"], cal:9, pro:0.3, carb:1.4, fat:0.3, fib:0.5, gi:0, mood_boost:["depressed","brain_fog","stressed","anxious"], mood_avoid:[], key_nutrients:["Curcumin (200mg)","Piperine"], avoid_if:["gallstones"], drug_int:"blood_thinners", research:"Curcumin RCT equivalent to 20mg fluoxetine for mild depression (Sanmukhani 2014); piperine +2000% bioavailability" },
+  { id:"f037", name:"Ashwagandha", cat:"herb", emoji:"🌿", diet:["vegetarian","vegan","eggetarian","non-vegetarian"], cal:5, pro:0.1, carb:1, fat:0.1, fib:0.3, gi:0, mood_boost:["stressed","anxious","fatigued"], mood_avoid:[], key_nutrients:["Withanolides","Alkaloids"], avoid_if:["pregnancy","autoimmune_disease"], drug_int:"sedatives", research:"KSM-66 RCT: 27.9% reduction in serum cortisol vs placebo (Chandrasekhar 2012)" },
+  { id:"f038", name:"Saffron (Kesar)", cat:"spice", emoji:"🌸", diet:["vegetarian","vegan","eggetarian","non-vegetarian"], cal:3, pro:0.1, carb:0.7, fat:0, fib:0, gi:0, mood_boost:["depressed","anxious","stressed"], mood_avoid:[], key_nutrients:["Safranal","Crocin","Antioxidants"], avoid_if:["pregnancy_high_dose"], drug_int:"anticoagulants", research:"30mg/day: equivalent antidepressant effect to imipramine 100mg/day (Akhondzadeh 2004)" },
+  // Beverages & Functional
+  { id:"f039", name:"Dark Chocolate (85%+)", cat:"other", emoji:"🍫", diet:["vegetarian","eggetarian","non-vegetarian"], cal:598, pro:7.8, carb:46, fat:43, fib:10.9, gi:22, mood_boost:["stressed","depressed","brain_fog"], mood_avoid:["anxious"], key_nutrients:["Magnesium","Polyphenols (1860mg)","Iron","Theobromine"], avoid_if:["caffeine_sensitivity"], drug_int:"maois", research:"Cocoa flavanols increase cerebral blood flow; increases BDNF in 30 days (Martin 2012)" },
+  { id:"f040", name:"Chamomile Tea", cat:"beverage", emoji:"🍵", diet:["vegetarian","vegan","eggetarian","non-vegetarian"], cal:2, pro:0, carb:0.4, fat:0, fib:0, gi:0, mood_boost:["anxious","stressed","irritable"], mood_avoid:[], key_nutrients:["Apigenin","Bisabolol"], avoid_if:["ragweed_allergy"], drug_int:"warfarin", research:"Apigenin binds GABA-A receptors; long-term use reduced GAD recurrence by 56% (Mao 2016)" },
+  { id:"f041", name:"Golden Milk (Turmeric Latte)", cat:"beverage", emoji:"🥛", diet:["vegetarian","eggetarian","non-vegetarian"], cal:135, pro:7, carb:12, fat:6, fib:0.5, gi:30, mood_boost:["depressed","anxious","stressed","brain_fog"], mood_avoid:[], key_nutrients:["Curcumin","Calcium","Tryptophan","B12"], avoid_if:[], drug_int:"blood_thinners", research:"Combines curcumin + milk tryptophan; supports sleep onset via tryptophan pathway" },
+  { id:"f042", name:"Green Tea (Matcha)", cat:"beverage", emoji:"🍵", diet:["vegetarian","vegan","eggetarian","non-vegetarian"], cal:5, pro:0.6, carb:0.5, fat:0, fib:0.4, gi:0, mood_boost:["stressed","brain_fog"], mood_avoid:["anxious"], key_nutrients:["L-Theanine (25mg)","EGCG","Catechins"], avoid_if:["insomnia"], drug_int:"iron_absorption", research:"L-theanine + caffeine synergy: alpha brain wave production without jitteriness (Nobre 2008)" },
+  { id:"f043", name:"Fermented Idli/Dosa", cat:"other", emoji:"🫓", diet:["vegetarian","vegan","eggetarian"], cal:39, pro:2.1, carb:7.7, fat:0.2, fib:0.5, gi:35, mood_boost:["anxious","depressed","irritable"], mood_avoid:[], key_nutrients:["Probiotics","Folate (12x boost)","B12","Riboflavin"], avoid_if:[], drug_int:"antibiotics", research:"Fermentation increases folate 12x; probiotics reduce anxiety via vagus nerve (Foster 2017)" },
+  { id:"f044", name:"Coconut Oil (Virgin)", cat:"fat", emoji:"🥥", diet:["vegetarian","vegan","eggetarian","non-vegetarian"], cal:862, pro:0, carb:0, fat:100, fib:0, gi:0, mood_boost:["brain_fog","fatigued"], mood_avoid:[], key_nutrients:["MCT (60%)","Lauric Acid"], avoid_if:["cardiovascular_disease_high_risk"], drug_int:null, research:"MCTs convert to ketones — alternative brain fuel; lauric acid antimicrobial for gut health" },
+];
+
+const MOODS = [
+  { id:"depressed", label:"Low / Sad", emoji:"😔", color:"var(--lavender)", desc:"Feeling down, lack of motivation" },
+  { id:"anxious", label:"Anxious", emoji:"😰", color:"var(--coral)", desc:"Nervous, worried, racing thoughts" },
+  { id:"stressed", label:"Stressed", emoji:"😤", color:"var(--amber)", desc:"Overwhelmed, under pressure" },
+  { id:"fatigued", label:"Fatigued", emoji:"😴", color:"var(--sky)", desc:"Low energy, tired, sluggish" },
+  { id:"brain_fog", label:"Brain Fog", emoji:"🌫️", color:"var(--sage)", desc:"Difficulty concentrating, unclear thinking" },
+  { id:"irritable", label:"Irritable", emoji:"😠", color:"var(--rose)", desc:"Easily agitated, mood swings" },
+];
+
+const BIOMARKERS = [
+  { id:"vitamin_d", name:"Vitamin D", unit:"ng/mL", low:20, opt_min:40, opt_max:60, high:100, color:"var(--amber)", emoji:"☀️", impact:"Low VD strongly linked to depression & SAD" },
+  { id:"b12", name:"Vitamin B12", unit:"pg/mL", low:200, opt_min:400, opt_max:900, high:2000, color:"var(--teal)", emoji:"🔵", impact:"B12 deficiency causes depression, fatigue & brain fog" },
+  { id:"iron", name:"Serum Iron", unit:"µg/dL", low:60, opt_min:80, opt_max:170, high:300, color:"var(--coral)", emoji:"⚙️", impact:"Iron deficiency causes fatigue, poor concentration" },
+  { id:"thyroid_tsh", name:"TSH (Thyroid)", unit:"mIU/L", low:0.4, opt_min:1.5, opt_max:2.5, high:4.5, color:"var(--sage)", emoji:"🦋", impact:"Hypothyroid → depression; hyperthyroid → anxiety" },
+  { id:"hba1c", name:"HbA1c", unit:"%", low:4, opt_min:4.8, opt_max:5.6, high:6.5, color:"var(--lavender)", emoji:"🩸", impact:"Blood sugar dysregulation → mood crashes, irritability" },
+  { id:"crp", name:"CRP (Inflammation)", unit:"mg/L", low:0, opt_min:0, opt_max:1, high:10, color:"var(--rose)", emoji:"🔥", impact:"High CRP neuroinflammation → treatment-resistant depression" },
+  { id:"omega3_index", name:"Omega-3 Index", unit:"%", low:4, opt_min:8, opt_max:12, high:16, color:"var(--sky)", emoji:"🐟", impact:"Low omega-3 index: strongest dietary predictor of depression" },
+  { id:"ferritin", name:"Ferritin", unit:"ng/mL", low:15, opt_min:50, opt_max:150, high:200, color:"var(--amber)", emoji:"🏪", impact:"Low ferritin → restless legs, fatigue, anxiety" },
+];
+
+const RECIPES = {
+  f015: { title:"Overnight Oats Bowl", steps:["Soak 40g oats in 150ml milk/oat milk overnight in fridge","Morning: stir in 1 tbsp chia seeds","Top with sliced banana + 2 tsp almond butter","Sprinkle 2 tsp flaxseeds + pinch cinnamon","Drizzle 1 tsp honey; serve cold"], time:5, tip:"Slow-release carbs stabilise morning serotonin. Eat within 30 min of waking." },
+  f021: { title:"Tadka Masoor Dal", steps:["Rinse 100g dal; pressure cook 3 whistles with turmeric","Heat 1 tsp mustard oil in pan","Add 1 tsp cumin seeds; let crackle","Add 3 garlic cloves, 1 chopped tomato, salt","Pour over dal; simmer 5 min","Finish with lemon juice + coriander"], time:25, tip:"Lemon vitamin C triples iron absorption from dal." },
+  f025: { title:"Walnut Energy Bites", steps:["Toast 28g walnuts at 150°C for 6 min","Pulse with 4 dates + 1 tsp cocoa in blender","Roll into 4 balls, coat in sesame seeds","Refrigerate 30 min before eating"], time:10, tip:"Omega-3 peak blood levels 3-4 hours after eating — eat as afternoon snack for evening mood." },
+  f036: { title:"Haldi Doodh (Golden Milk)", steps:["Heat 240ml whole milk to near-boil (do not boil)","Add: 1 tsp turmeric + pinch black pepper + 1/2 tsp cinnamon","Whisk vigorously until frothy","Optional: 1/2 tsp ashwagandha + 1 tsp honey","Serve warm in a mug"], time:5, tip:"Black pepper increases curcumin absorption by 2000%. Drink 1 hour before bed." },
+  f030: { title:"Masala Scrambled Eggs", steps:["Whisk 2 eggs with pinch turmeric, cumin, salt","Heat 1 tsp ghee in non-stick pan on low heat","Add 1/4 onion finely chopped; sauté 2 min","Pour eggs; stir gently with spatula","Remove from heat when just set (slightly wet)","Top with coriander + squeeze lemon"], time:8, tip:"Choline from eggs supports acetylcholine memory pathway. Don't overcook — B vitamins degrade." },
+  f022: { title:"Moong Dal Cheela", steps:["Soak 100g moong dal 4 hours; drain","Blend with 1/2 tsp ginger + 1/4 tsp cumin + water to thick batter","Season with salt, chopped green chilli (optional)","Heat tawa; pour 1 ladle; spread thin circle","Drizzle 1/2 tsp oil; cook 3 min each side","Serve with mint chutney"], time:20, tip:"Sprouting moong before blending increases GABA content by 400%." },
+  f033: { title:"Turmeric Baked Salmon", steps:["Pat 85g salmon dry; season with 1/2 tsp turmeric, salt, pepper","Drizzle with 1 tsp olive oil + 1 tsp lemon zest","Bake at 200°C for 12-15 min until flakes easily","Serve with steamed spinach + lemon wedges"], time:15, tip:"EPA+DHA most bioavailable from whole fish. Do not deep fry — omega-3s oxidize above 175°C." },
+  f043: { title:"Classic Idli with Sambar", steps:["Use well-fermented batter (12hr+ at room temp)","Grease idli molds; fill 3/4 full","Steam on medium heat for 12 min (test with toothpick)","For sambar: boil masoor dal + vegetables + sambar powder","Temper with mustard + curry leaves + dried red chilli","Serve hot idli with sambar + green chutney"], time:20, tip:"Fermentation increases folate 12x. Bacteria in batter survive digestion and colonize gut." },
+};
+
+// ════════════════════════════════════════════════════════════
+// RECOMMENDATION ENGINE
+// ════════════════════════════════════════════════════════════
+function getGIClass(gi) {
+  if (gi === 0) return { label:"None", cls:"gi-low" };
+  if (gi <= 40) return { label:`GI ${gi} Low`, cls:"gi-low" };
+  if (gi <= 65) return { label:`GI ${gi} Med`, cls:"gi-medium" };
+  return { label:`GI ${gi} High`, cls:"gi-high" };
+}
+
+function recommendFoods(moods, dietType, conditions, medications, biomarkers, bmi) {
+  const moodWeights = {
+    depressed:  { tryptophan:1, omega3:1, folate:1, b12:1, vitamin_d:1 },
+    anxious:    { magnesium:1, zinc:1, gi_score:1, fiber:0.8, probiotics:0.8 },
+    stressed:   { magnesium:1, omega3:0.8, antioxidants:0.8 },
+    fatigued:   { iron:1, b12:1, magnesium:0.7, vitamin_d:0.8, protein:0.8 },
+    brain_fog:  { omega3:1, antioxidants:1, folate:0.7, zinc:0.6 },
+    irritable:  { magnesium:1, tryptophan:0.8, gi_score:0.8, fiber:0.6 },
+  };
+
+  const drugFlags = {
+    warfarin: ["f003","f011","f029","f040"],
+    maois: ["f009","f030","f039"],
+    blood_thinners: ["f007","f029","f033","f036"],
+  };
+  const flagged = new Set(medications.flatMap(m => drugFlags[m] || []));
+
+  return FOODS_DB
+    .filter(f => f.diet.includes(dietType))
+    .filter(f => !conditions.some(c => (f.avoid_if||[]).includes(c)))
+    .filter(f => !flagged.has(f.id))
+    .map(f => {
+      let score = 0;
+      // Mood match
+      const moodMatches = moods.filter(m => f.mood_boost.includes(m)).length;
+      score += moodMatches * 25;
+      // Penalise if in mood_avoid
+      const moodAvoid = moods.filter(m => (f.mood_avoid||[]).includes(m)).length;
+      score -= moodAvoid * 20;
+      // GI penalty for anxiety/irritable
+      if ((moods.includes("anxious")||moods.includes("irritable")) && f.gi > 65) score -= 15;
+      // BMI calorie fit
+      if (bmi) {
+        const tgt = bmi > 25 ? 140 : bmi < 18.5 ? 200 : 160;
+        score -= Math.abs(f.cal - tgt) / 20;
+      }
+      // Biomarker boosts
+      const bm_map = {
+        vitamin_d: ["f030","f033","f034","f031"],
+        b12: ["f033","f034","f035","f030","f031"],
+        iron: ["f001","f021","f027","f034","f039"],
+        hba1c: ["f022","f015","f025","f017"],
+        crp: ["f010","f025","f028","f029","f033"],
+        omega3_index: ["f033","f025","f028","f029"],
+        ferritin: ["f001","f021","f023","f034"],
+      };
+      Object.entries(biomarkers).forEach(([marker, val]) => {
+        const bm = BIOMARKERS.find(b => b.id === marker);
+        if (!bm) return;
+        const isLow = parseFloat(val) < bm.low;
+        if (isLow && (bm_map[marker]||[]).includes(f.id)) score += 20;
+      });
+      return { ...f, score: Math.max(0, Math.round(score)) };
+    })
+    .sort((a,b) => b.score - a.score);
+}
+
+function buildMealPlan(recs, dietType, moods) {
+  const meals = {
+    breakfast: { label:"Breakfast", time:"7:30 AM", icon:"🌅", cats:["grain","fruit","dairy","beverage","nut","seed"], foods:[] },
+    midmorning: { label:"Mid-Morning", time:"10:30 AM", icon:"☕", cats:["fruit","nut","seed","beverage"], foods:[] },
+    lunch: { label:"Lunch", time:"1:00 PM", icon:"🍱", cats:["grain","legume","vegetable","fish","meat","fat","spice","herb"], foods:[] },
+    evening: { label:"Evening Snack", time:"4:30 PM", icon:"🌿", cats:["fruit","nut","seed","beverage","other"], foods:[] },
+    dinner: { label:"Dinner", time:"7:30 PM", icon:"🌙", cats:["grain","legume","vegetable","fish","meat","spice","herb"], foods:[] },
+  };
+  const used = new Set();
+  Object.entries(meals).forEach(([key, meal]) => {
+    const limit = (key==="lunch"||key==="dinner") ? 4 : 2;
+    const suitable = recs.filter(f => meal.cats.includes(f.cat) && !used.has(f.id));
+    meal.foods = suitable.slice(0, limit);
+    meal.foods.forEach(f => used.add(f.id));
+    meal.total_cal = meal.foods.reduce((s,f) => s + f.cal, 0);
+    meal.total_pro = meal.foods.reduce((s,f) => s + f.pro, 0);
+    meal.avg_gi = meal.foods.length ? Math.round(meal.foods.reduce((s,f) => s + f.gi, 0) / meal.foods.length) : 0;
+  });
+  return meals;
+}
+
+// ════════════════════════════════════════════════════════════
+// APP STATE
+// ════════════════════════════════════════════════════════════
+let state = {
+  page: "onboarding",
+  ob_step: 1,
+  profile: { name:"", age:22, gender:"female", diet:"vegetarian", bmi:null },
+  moods: [],
+  conditions: [],
+  medications: [],
+  biomarkers: {},
+  biomarker_vals: {},
+  recommendations: [],
+  mealPlan: {},
+  selectedFood: null,
+  activeTab: "recommendations",
+  moodHistory: [
+    { date:"Mon", moods:["stressed","fatigued"], score:42 },
+    { date:"Tue", moods:["anxious"], score:55 },
+    { date:"Wed", moods:["stressed"], score:61 },
+    { date:"Thu", moods:["fatigued","brain_fog"], score:48 },
+    { date:"Fri", moods:["depressed"], score:38 },
+    { date:"Sat", moods:["anxious","stressed"], score:53 },
+    { date:"Today", moods:[], score:0 },
+  ],
+};
+
+function setState(patch) {
+  Object.assign(state, patch);
+  render();
+}
+
+// ════════════════════════════════════════════════════════════
+// RENDER ENGINE
+// ════════════════════════════════════════════════════════════
+function render() {
+  const app = document.getElementById("app");
+  if (state.page === "onboarding") {
+    app.innerHTML = renderOnboarding();
+  } else {
+    app.innerHTML = `<div class="shell">${renderSidebar()}${renderMain()}</div>`;
+  }
+  attachEvents();
+  animateNumbers();
+}
+
+// ── ONBOARDING ─────────────────────────────────────────────
+function renderOnboarding() {
+  const steps = [
+    { label:"Profile", q:"Tell us about you" },
+    { label:"Mood", q:"How are you feeling?" },
+    { label:"Health", q:"Your health data" },
+    { label:"Labs", q:"Blood test results" },
+  ];
+  const s = state.ob_step;
+
+  const leftContent = {
+    1: {
+      icon:"🌱", title:`Welcome to <em>NutriMind</em>`,
+      desc:"India's first AI-powered diet system built on nutritional psychiatry — the science of using food to directly support your mental health.",
+      stat:"197M Indians affected by mental health disorders, yet <20% receive any treatment. Food is your first-line intervention.",
+      badge:"Backed by SMILES Trial 2017 · NIMHANS Research"
+    },
+    2: {
+      icon:"🧠", title:"Mood is your <em>primary input</em>",
+      desc:"Unlike calorie apps, NutriMind starts with how you feel — because your mental state determines which neurotransmitters you need to rebuild.",
+      stat:"Different mood states deplete different nutrients: depression → tryptophan; anxiety → magnesium; fatigue → iron + B12.",
+      badge:"Nutritional Psychiatry · Firth et al. BMJ 2020"
+    },
+    3: {
+      icon:"🔬", title:"Your body tells us <em>the truth</em>",
+      desc:"Conditions and medications interact with nutrients in ways that most apps completely ignore. NutriMind screens for drug-nutrient interactions.",
+      stat:"40% of antidepressant non-responders have undiagnosed folate or B12 deficiency (NIMHANS 2019).",
+      badge:"Drug-Nutrient Interaction Database · ICMR-NIN"
+    },
+    4: {
+      icon:"🩸", title:"Blood tests → <em>precise meals</em>",
+      desc:"NutriMind is the only Indian app that reads your lab reports and automatically adjusts your meal plan to fill the exact gaps your body shows.",
+      stat:"Vitamin D deficiency affects 70-80% of urban Indians. Omega-3 deficiency affects 90%.",
+      badge:"8 Biomarkers · USDA FoodData Central"
+    },
+  }[s];
+
+  const stepsIndicator = steps.map((st, i) => {
+    const cls = i+1 < s ? "done" : i+1 === s ? "active" : "";
+    return `<div class="ob-step ${cls}"></div>`;
+  }).join("");
+
+  return `
+  <div class="onboarding">
+    <div class="ob-left animate-up">
+      <div style="font-size:48px;margin-bottom:20px">${leftContent.icon}</div>
+      <div class="ob-number">Step ${s} of 4</div>
+      <h1 class="ob-title">${leftContent.title}</h1>
+      <p class="ob-desc">${leftContent.desc}</p>
+      <div class="alert alert-info mt-6" style="font-size:12.5px">${leftContent.stat}</div>
+      <div class="badge badge-teal mt-4">${leftContent.badge}</div>
+    </div>
+    <div class="ob-right">
+      <div class="ob-step-indicator">${stepsIndicator}</div>
+      ${renderObStep(s)}
+      <div class="flex gap-3 mt-6">
+        ${s > 1 ? `<button class="btn btn-secondary" id="ob-back">← Back</button>` : ""}
+        <button class="btn btn-primary flex-1" id="ob-next">
+          ${s < 4 ? "Continue →" : "Generate My NutriPlan 🌱"}
+        </button>
+      </div>
+      ${s === 4 ? `<p class="text-xs text-muted mt-4 text-right">You can skip blood tests and update later</p>` : ""}
+    </div>
+  </div>`;
+}
+
+function renderObStep(s) {
+  if (s === 1) return `
+    <h2 style="font-size:26px;margin-bottom:24px">Your <em style="color:var(--teal)">profile</em></h2>
+    <div class="form-group">
+      <label class="form-label">Your Name</label>
+      <input class="input" id="inp-name" placeholder="e.g. Priya" value="${state.profile.name}">
+    </div>
+    <div class="grid-2">
+      <div class="form-group">
+        <label class="form-label">Age</label>
+        <input class="input" id="inp-age" type="number" min="16" max="80" placeholder="22" value="${state.profile.age}">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Gender</label>
+        <select class="input" id="inp-gender">
+          <option value="female" ${state.profile.gender==="female"?"selected":""}>Female</option>
+          <option value="male" ${state.profile.gender==="male"?"selected":""}>Male</option>
+          <option value="other" ${state.profile.gender==="other"?"selected":""}>Other</option>
+        </select>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="form-group">
+        <label class="form-label">Dietary Type</label>
+        <select class="input" id="inp-diet">
+          <option value="vegetarian" ${state.profile.diet==="vegetarian"?"selected":""}>🥗 Vegetarian</option>
+          <option value="vegan" ${state.profile.diet==="vegan"?"selected":""}>🌿 Vegan</option>
+          <option value="eggetarian" ${state.profile.diet==="eggetarian"?"selected":""}>🥚 Eggetarian</option>
+          <option value="non-vegetarian" ${state.profile.diet==="non-vegetarian"?"selected":""}>🍗 Non-Vegetarian</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">BMI (optional)</label>
+        <input class="input" id="inp-bmi" type="number" min="15" max="45" step="0.1" placeholder="e.g. 22.4" value="${state.profile.bmi||""}">
+      </div>
+    </div>`;
+
+  if (s === 2) return `
+    <h2 style="font-size:26px;margin-bottom:8px">How are you <em style="color:var(--teal)">feeling</em> lately?</h2>
+    <p class="text-secondary text-sm mb-6">Select all that apply over the past 1-2 weeks</p>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:24px">
+      ${MOODS.map(m => `
+        <div class="mood-chip ${state.moods.includes(m.id)?'selected':''}" data-mood="${m.id}">
+          <span style="font-size:18px">${m.emoji}</span>
+          <div>
+            <div>${m.label}</div>
+            <div style="font-size:10px;color:var(--text-muted);font-family:'DM Sans',sans-serif">${m.desc}</div>
+          </div>
+        </div>`).join("")}
+    </div>
+    ${state.moods.length > 0 ? `
+    <div class="alert alert-info">
+      <span>🎯</span>
+      <div>
+        <strong>Targeting:</strong> ${state.moods.map(m => {
+          const maps = { depressed:"Tryptophan, Omega-3, Folate, B12", anxious:"Magnesium, Zinc, GABA foods, Probiotics", stressed:"Magnesium, Vitamin C, Adaptogens", fatigued:"Iron, B12, Coenzyme Q10", brain_fog:"Omega-3, Antioxidants, Choline", irritable:"Magnesium, Complex carbs, Tryptophan" };
+          return maps[m]||m;
+        }).join(" · ")}
+      </div>
+    </div>` : ""}`;
+
+  if (s === 3) return `
+    <h2 style="font-size:26px;margin-bottom:8px">Health <em style="color:var(--teal)">conditions</em> & medications</h2>
+    <p class="text-secondary text-sm mb-6">Helps us avoid harmful food-drug interactions</p>
+    <div class="form-group">
+      <label class="form-label">Conditions (select all that apply)</label>
+      <div style="display:flex;flex-wrap:wrap;gap:8px">
+        ${["diabetes_uncontrolled","celiac_disease","kidney_stones","ibs_fodmap","lactose_intolerance","hypothyroid_unmedicated","acid_reflux_severe","cardiovascular_disease_high_risk","tree_nut_allergy","egg_allergy","fish_allergy"].map(c => `
+          <div class="mood-chip ${state.conditions.includes(c)?'selected':''}" style="font-size:12px;padding:8px 12px" data-condition="${c}">
+            ${c.replace(/_/g," ")}
+          </div>`).join("")}
+      </div>
+    </div>
+    <div class="form-group mt-4">
+      <label class="form-label">Current Medications (select all that apply)</label>
+      <div style="display:flex;flex-wrap:wrap;gap:8px">
+        ${[["warfarin","Warfarin/Blood Thinners"],["maois","MAOIs (antidepressants)"],["blood_thinners","Aspirin/Clopidogrel"],["antibiotics","Antibiotics"],["sedatives","Sedatives/Sleep meds"],["statins","Statins"],["iron_absorption","Iron supplements"]].map(([v,l]) => `
+          <div class="mood-chip ${state.medications.includes(v)?'selected':''}" style="font-size:12px;padding:8px 12px" data-medication="${v}">⚠️ ${l}</div>`).join("")}
+      </div>
+    </div>`;
+
+  if (s === 4) return `
+    <h2 style="font-size:26px;margin-bottom:8px">Your <em style="color:var(--teal)">blood test</em> results</h2>
+    <p class="text-secondary text-sm mb-6">Enter recent values or skip — we'll flag what to test for</p>
+    <div class="grid-2">
+      ${BIOMARKERS.map(b => `
+        <div class="form-group">
+          <label class="form-label">${b.emoji} ${b.name}</label>
+          <input class="input" id="bm-${b.id}" type="number" step="0.1"
+            placeholder="${b.opt_min}–${b.opt_max} ${b.unit}"
+            value="${state.biomarker_vals[b.id]||""}">
+          <div class="text-xs text-muted mt-1">Optimal: ${b.opt_min}–${b.opt_max} ${b.unit}</div>
+        </div>`).join("")}
+    </div>
+    <div class="research-tag mt-2">
+      <strong>Why this matters:</strong> 70-80% of urban Indians are Vitamin D deficient. 40% of depression cases have low folate/B12. NutriMind identifies your specific gaps.
+    </div>`;
+}
+
+// ── SIDEBAR ────────────────────────────────────────────────
+function renderSidebar() {
+  const nav = [
+    { id:"dashboard", icon:"◈", label:"Dashboard" },
+    { id:"mood", icon:"♡", label:"Mood Check-In" },
+    { id:"recommendations", icon:"◉", label:"Food Recommendations" },
+    { id:"mealplan", icon:"⊟", label:"Meal Plan" },
+    { id:"biomarkers", icon:"⬡", label:"Biomarkers" },
+    { id:"avoid", icon:"⊘", label:"Foods to Avoid" },
+    { id:"research", icon:"◪", label:"Research Library" },
+  ];
+  const initials = (state.profile.name||"U").slice(0,1).toUpperCase();
+  return `
+  <nav class="sidebar">
+    <div class="logo">
+      <div class="logo-mark">🌿</div>
+      <div><div class="logo-text">NutriMind</div><div class="logo-sub">Mental Wellness Diet</div></div>
+    </div>
+    ${nav.map(n => `
+      <button class="nav-item ${state.page===n.id?'active':''}" data-page="${n.id}">
+        <span class="icon">${n.icon}</span>${n.label}
+      </button>`).join("")}
+    <div class="sidebar-spacer"></div>
+    <div class="user-card">
+      <div class="avatar">${initials}</div>
+      <div><div style="font-size:13px;font-weight:600">${state.profile.name||"User"}</div>
+      <div class="text-xs text-muted">${state.profile.diet}</div></div>
+    </div>
+  </nav>`;
+}
+
+// ── MAIN CONTENT ROUTER ────────────────────────────────────
+function renderMain() {
+  const pages = {
+    dashboard: renderDashboard,
+    mood: renderMoodPage,
+    recommendations: renderRecommendations,
+    mealplan: renderMealPlan,
+    biomarkers: renderBiomarkers,
+    avoid: renderAvoidFoods,
+    research: renderResearch,
+  };
+  const fn = pages[state.page] || renderDashboard;
+  return `<main class="main">${fn()}</main>`;
+}
+
+// ── DASHBOARD ──────────────────────────────────────────────
+function renderDashboard() {
+  const profile = classifyProfile();
+  const activeMoods = state.moods;
+  const deficiencies = getDeficiencies();
+  const warnings = getDrugWarnings();
+
+  return `
+  <div class="page-header animate-up">
+    <div>
+      <h1 class="page-title">Good ${getTimeOfDay()}, <span>${state.profile.name||"there"}</span></h1>
+      <p class="page-subtitle">Your personalised NutriPlan is ready · ${new Date().toLocaleDateString("en-IN",{weekday:"long",day:"numeric",month:"long"})}</p>
+    </div>
+    <div class="flex gap-2 items-center">
+      <span class="badge badge-teal">🔬 ${profile.label}</span>
+    </div>
+  </div>
+
+  ${warnings.length ? `
+  <div class="animate-up-delay-1 mb-6">
+    ${warnings.map(w => `
+    <div class="alert alert-warn mb-2">
+      ⚠️ <strong>Drug Interaction:</strong> ${w}
+    </div>`).join("")}
+  </div>` : ""}
+
+  <div class="grid-4 animate-up-delay-1 mb-6">
+    <div class="stat-box">
+      <div class="stat-label">Active Moods</div>
+      <div class="stat-value" style="font-size:28px">${activeMoods.length || "—"}</div>
+      <div class="stat-delta">${activeMoods.map(m => MOODS.find(x=>x.id===m)?.emoji||"").join(" ")||"Check in below"}</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-label">Foods Recommended</div>
+      <div class="stat-value" style="color:var(--teal)" data-countup="${state.recommendations.length||0}">${state.recommendations.length||0}</div>
+      <div class="stat-delta delta-pos">from 150+ foods database</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-label">Deficiencies</div>
+      <div class="stat-value" style="color:${deficiencies.length>0?"var(--coral)":"var(--teal)"}">${deficiencies.length}</div>
+      <div class="stat-delta ${deficiencies.length>0?"delta-neg":"delta-pos"}">${deficiencies.length>0?deficiencies.map(d=>d.name).join(", "):"All in range"}</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-label">Nutrient Profile</div>
+      <div class="stat-value" style="font-size:20px;padding-top:4px">${profile.emoji}</div>
+      <div class="stat-delta">${profile.label}</div>
+    </div>
+  </div>
+
+  <div class="grid-2 animate-up-delay-2 mb-6">
+    <div class="card">
+      <div class="flex justify-between items-center mb-4">
+        <h3 style="font-size:18px">Mood This Week</h3>
+        <span class="badge badge-sage">7-day view</span>
+      </div>
+      ${renderMoodChart()}
+    </div>
+    <div class="card">
+      <div class="flex justify-between items-center mb-4">
+        <h3 style="font-size:18px">Top Foods Today</h3>
+        <button class="btn btn-ghost" style="padding:6px 12px;font-size:12px" data-page="recommendations">See all →</button>
+      </div>
+      ${state.recommendations.slice(0,4).map(f => renderFoodRow(f)).join("")||`
+      <div style="text-align:center;padding:32px;color:var(--text-muted)">
+        <div style="font-size:32px;margin-bottom:8px">🌿</div>
+        <div>Complete mood check-in to see recommendations</div>
+        <button class="btn btn-primary mt-4" data-page="mood" style="margin:12px auto 0">Check In →</button>
+      </div>`}
+    </div>
+  </div>
+
+  <div class="card animate-up-delay-2">
+    <div class="flex justify-between items-center mb-4">
+      <h3 style="font-size:18px">Nutritional Psychiatry Science</h3>
+      <span class="badge badge-lavender">SMILES Trial 2017</span>
+    </div>
+    <div class="grid-3">
+      ${[
+        { title:"Diet → Depression", stat:"32% reduction", desc:"Mediterranean-style diet reduces depression symptoms by 32% vs social support (SMILES RCT, Jacka 2017)", color:"var(--teal)" },
+        { title:"Omega-3 & Mood", stat:"Meta n=13,000", desc:"EPA supplementation ≥1g/day significantly reduces depressive symptoms (Sublette 2011 meta-analysis)", color:"var(--amber)" },
+        { title:"India Gap", stat:"80% untreated", desc:"India has an 80%+ treatment gap for mental health — food is the most accessible first-line intervention (NIMHANS)", color:"var(--coral)" },
+      ].map(s => `
+      <div class="stat-box" style="border-left:3px solid ${s.color}">
+        <div class="stat-label">${s.title}</div>
+        <div style="font-family:'DM Serif Display',serif;font-size:22px;color:${s.color};margin:6px 0">${s.stat}</div>
+        <div style="font-size:12px;color:var(--text-secondary);line-height:1.5">${s.desc}</div>
+      </div>`).join("")}
+    </div>
+  </div>`;
+}
+
+function renderMoodChart() {
+  const maxScore = 100;
+  const days = state.moodHistory;
+  const bars = days.map((d, i) => {
+    const isToday = d.date === "Today";
+    const h = isToday ? 0 : Math.max(8, (d.score / maxScore) * 80);
+    const color = isToday ? "var(--border)" : d.score > 60 ? "var(--teal)" : d.score > 45 ? "var(--amber)" : "var(--coral)";
+    return `
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;flex:1">
+      <div style="height:80px;display:flex;align-items:flex-end">
+        <div style="width:24px;height:${h}px;background:${color};border-radius:4px 4px 0 0;opacity:${isToday?0.3:0.8}"></div>
+      </div>
+      <div style="font-size:10px;color:var(--text-muted);font-family:'Syne',sans-serif;font-weight:600">${d.date}</div>
+    </div>`;
+  }).join("");
+  return `<div style="display:flex;gap:4px;padding:0 4px">${bars}</div>
+    <div class="flex justify-between mt-2">
+      <span class="text-xs text-muted">Lower = harder day</span>
+      <span class="text-xs text-muted">Higher = better day</span>
+    </div>`;
+}
+
+// ── MOOD PAGE ──────────────────────────────────────────────
+function renderMoodPage() {
+  return `
+  <div class="page-header animate-up">
+    <div><h1 class="page-title">Mood <span>Check-In</span></h1>
+    <p class="page-subtitle">Select how you've been feeling to generate your personalised plan</p></div>
+  </div>
+  <div class="card animate-up-delay-1 mb-6">
+    <h3 style="font-size:18px;margin-bottom:6px">How have you been feeling this week?</h3>
+    <p class="text-secondary text-sm mb-4">Select all that apply — NutriMind maps each mood state to specific nutrient deficiencies</p>
+    <div style="display:flex;flex-wrap:wrap;gap:12px">
+      ${MOODS.map(m => `
+        <div class="mood-chip ${state.moods.includes(m.id)?'selected':''}" data-mood="${m.id}" style="padding:14px 20px">
+          <span style="font-size:24px">${m.emoji}</span>
+          <div>
+            <div style="font-size:14px">${m.label}</div>
+            <div style="font-size:11px;color:var(--text-muted);font-family:'DM Sans',sans-serif;margin-top:2px">${m.desc}</div>
+          </div>
+        </div>`).join("")}
+    </div>
+  </div>
+  ${state.moods.length > 0 ? `
+  <div class="card animate-up-delay-2 mb-6">
+    <h3 style="font-size:18px;margin-bottom:16px">Nutrient Targets for Your Moods</h3>
+    <div class="grid-2">
+      ${state.moods.map(m => {
+        const mood = MOODS.find(x=>x.id===m);
+        const nutrientInfo = {
+          depressed: { nutrients:["Tryptophan → Serotonin","Omega-3 (EPA/DHA)","Folate (SAM-e)","Vitamin B12","Vitamin D"], mech:"Serotonin & dopamine precursor supply" },
+          anxious: { nutrients:["Magnesium (GABA)","Zinc","B-Complex","Probiotics (gut-brain axis)","Low-GI carbs"], mech:"GABA-A receptor modulation" },
+          stressed: { nutrients:["Magnesium","Vitamin C","Adaptogens (Ashwagandha)","Omega-3","Antioxidants"], mech:"HPA axis / cortisol regulation" },
+          fatigued: { nutrients:["Iron + Vitamin C","Vitamin B12","Coenzyme Q10","Magnesium","Complex carbs"], mech:"Mitochondrial energy production" },
+          brain_fog: { nutrients:["EPA/DHA Omega-3","Choline","Polyphenols / EGCG","Vitamin E","Antioxidants"], mech:"Neuroinflammation reduction, BDNF" },
+          irritable: { nutrients:["Magnesium","Complex carbs (stable GI)","Tryptophan","Calcium","Vitamin B6"], mech:"Blood sugar stabilisation" },
+        };
+        const info = nutrientInfo[m] || { nutrients:[], mech:"" };
+        return `
+        <div class="stat-box" style="border-left:3px solid ${mood?.color||'var(--teal)'}">
+          <div class="flex gap-2 items-center mb-2">
+            <span style="font-size:20px">${mood?.emoji}</span>
+            <strong style="font-family:'Syne',sans-serif;font-size:13px">${mood?.label}</strong>
+          </div>
+          <div style="font-size:11px;color:var(--text-muted);margin-bottom:8px">Mechanism: ${info.mech}</div>
+          ${info.nutrients.map(n => `<div style="font-size:12px;color:var(--text-secondary);padding:3px 0;border-bottom:1px solid var(--border)">✓ ${n}</div>`).join("")}
+        </div>`;
+      }).join("")}
+    </div>
+  </div>
+  <button class="btn btn-primary" id="generate-plan">Generate My NutriPlan →</button>
+  ` : ""}`;
+}
+
+// ── RECOMMENDATIONS ────────────────────────────────────────
+function renderRecommendations() {
+  const recs = state.recommendations;
+  return `
+  <div class="page-header animate-up">
+    <div><h1 class="page-title">Food <span>Recommendations</span></h1>
+    <p class="page-subtitle">${recs.length} foods matched · ranked by mood-nutrient fit score · diet: ${state.profile.diet}</p></div>
+    <div class="tabs">
+      <button class="tab ${state.activeTab==='recommendations'?'active':''}" data-tab="recommendations">All Foods</button>
+      <button class="tab ${state.activeTab==='top'?'active':''}" data-tab="top">Top 10</button>
+      <button class="tab ${state.activeTab==='by_category'?'active':''}" data-tab="by_category">By Category</button>
+    </div>
+  </div>
+  ${recs.length === 0 ? `
+  <div class="card" style="text-align:center;padding:60px">
+    <div style="font-size:48px;margin-bottom:16px">🌿</div>
+    <h3 style="font-size:20px;margin-bottom:8px">Complete your mood check-in first</h3>
+    <p class="text-secondary mb-6">NutriMind needs to know how you're feeling to generate targeted food recommendations</p>
+    <button class="btn btn-primary" data-page="mood">Go to Mood Check-In →</button>
+  </div>` : `
+  ${state.activeTab === "by_category" ? renderByCategory(recs) : `
+  <div class="grid-auto animate-up-delay-1">
+    ${(state.activeTab==="top" ? recs.slice(0,10) : recs).map(f => renderFoodCard(f)).join("")}
+  </div>`}`}`;
+}
+
+function renderByCategory(recs) {
+  const cats = [...new Set(recs.map(f=>f.cat))];
+  const catEmoji = { grain:"🌾", vegetable:"🥬", fruit:"🍓", legume:"🫘", nut:"🌰", seed:"⚫", protein:"🥩", dairy:"🧀", fish:"🐟", meat:"🍗", spice:"🌶️", herb:"🌿", beverage:"☕", fat:"🫙", other:"✨" };
+  return cats.map(cat => {
+    const foods = recs.filter(f=>f.cat===cat);
+    return `
+    <div class="mb-6">
+      <h3 style="font-size:16px;margin-bottom:12px;font-family:'Syne',sans-serif">
+        ${catEmoji[cat]||"•"} ${cat.charAt(0).toUpperCase()+cat.slice(1)}s
+        <span class="text-muted" style="font-size:13px;font-weight:400"> · ${foods.length} foods</span>
+      </h3>
+      <div class="grid-auto">
+        ${foods.map(f => renderFoodCard(f)).join("")}
+      </div>
+    </div>`;
+  }).join("");
+}
+
+function renderFoodCard(f) {
+  const gi = getGIClass(f.gi);
+  const pct = Math.min(100, Math.round(f.score));
+  return `
+  <div class="food-card" data-food="${f.id}">
+    <div class="flex justify-between items-center mb-2">
+      <div style="font-size:28px">${f.emoji}</div>
+      <div style="text-align:right">
+        <div class="gi-pill ${gi.cls}">${gi.label}</div>
+        ${f.score > 0 ? `<div style="font-size:10px;color:var(--text-muted);margin-top:3px;font-family:'Syne',sans-serif">Match: ${pct}%</div>` : ""}
+      </div>
+    </div>
+    <div class="food-name">${f.name}</div>
+    <div class="food-meta">${f.cal} kcal · ${f.pro}g protein · ${f.fib}g fiber</div>
+    <div class="food-macros mb-2">
+      <div class="macro-pill">${f.carb}g carb</div>
+      <div class="macro-pill">${f.fat}g fat</div>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:4px">
+      ${(f.key_nutrients||[]).slice(0,3).map(n => `<span class="badge badge-teal" style="font-size:10px">${n}</span>`).join("")}
+    </div>
+    ${f.drug_int ? `<div class="text-xs" style="color:var(--amber);margin-top:6px">⚠️ Drug interaction possible</div>` : ""}
+    ${pct > 0 ? `<div class="progress-bar mt-3"><div class="progress-fill" style="width:${pct}%"></div></div>` : ""}
+  </div>`;
+}
+
+function renderFoodRow(f) {
+  const gi = getGIClass(f.gi);
+  return `
+  <div class="flex items-center gap-12 mb-3" style="padding:10px;background:var(--surface);border-radius:var(--radius-sm);cursor:pointer" data-food="${f.id}">
+    <span style="font-size:22px">${f.emoji}</span>
+    <div style="flex:1">
+      <div style="font-size:13px;font-weight:600;font-family:'Syne',sans-serif">${f.name}</div>
+      <div class="text-xs text-muted">${f.cal} kcal · ${(f.key_nutrients||[]).slice(0,2).join(", ")}</div>
+    </div>
+    <span class="gi-pill ${gi.cls}">${gi.label}</span>
+  </div>`;
+}
+
+// ── MEAL PLAN ──────────────────────────────────────────────
+function renderMealPlan() {
+  const plan = state.mealPlan;
+  const hasPlan = plan && Object.keys(plan).length > 0;
+  if (!hasPlan) return `
+  <div class="page-header animate-up"><div>
+    <h1 class="page-title">Meal <span>Plan</span></h1>
+    <p class="page-subtitle">Full day plan with recipes and timing</p>
+  </div></div>
+  <div class="card" style="text-align:center;padding:60px">
+    <div style="font-size:48px;margin-bottom:16px">🍱</div>
+    <h3 style="font-size:20px;margin-bottom:8px">No meal plan yet</h3>
+    <p class="text-secondary mb-6">Complete your mood check-in to generate a personalised day plan</p>
+    <button class="btn btn-primary" data-page="mood">Start Check-In →</button>
+  </div>`;
+
+  const tdee = calculateTDEE(state.profile.bmi, state.profile.age, state.profile.gender);
+  const totalCal = Object.values(plan).reduce((s,m) => s + (m.total_cal||0), 0);
+
+  return `
+  <div class="page-header animate-up">
+    <div><h1 class="page-title">Today's <span>Meal Plan</span></h1>
+    <p class="page-subtitle">Personalised for: ${state.moods.map(m=>MOODS.find(x=>x.id===m)?.label||m).join(", ")||"your profile"} · ${state.profile.diet}</p></div>
+    <div class="flex gap-3">
+      <div class="stat-box" style="padding:12px 18px">
+        <div class="stat-label">Est. Calories</div>
+        <div style="font-family:'DM Serif Display',serif;font-size:22px;color:var(--teal)">${totalCal}</div>
+      </div>
+      <div class="stat-box" style="padding:12px 18px">
+        <div class="stat-label">TDEE Target</div>
+        <div style="font-family:'DM Serif Display',serif;font-size:22px">${tdee}</div>
+      </div>
+    </div>
+  </div>
+  <div class="timeline animate-up-delay-1">
+    ${Object.entries(plan).map(([key, meal]) => `
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="card">
+        <div class="flex justify-between items-center mb-4">
+          <div class="flex gap-3 items-center">
+            <span style="font-size:24px">${meal.icon}</span>
+            <div>
+              <h3 style="font-size:16px">${meal.label}</h3>
+              <div class="text-xs text-muted font-ui">${meal.time} · ${meal.total_cal||0} kcal · Avg GI: ${meal.avg_gi||0}</div>
+            </div>
+          </div>
+          <div class="flex gap-2">
+            <span class="badge ${meal.avg_gi < 40 ? 'badge-teal' : meal.avg_gi < 65 ? 'badge-amber' : 'badge-coral'}">
+              GI ${meal.avg_gi||0}
+            </span>
+          </div>
+        </div>
+        <div class="grid-2">
+          ${(meal.foods||[]).map(f => `
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px;cursor:pointer" data-food="${f.id}">
+            <div class="flex gap-2 items-center mb-2">
+              <span style="font-size:20px">${f.emoji}</span>
+              <div>
+                <div style="font-size:13px;font-weight:600;font-family:'Syne',sans-serif">${f.name}</div>
+                <div class="text-xs text-muted">${f.cal} kcal · ${f.pro}g protein</div>
+              </div>
+            </div>
+            ${RECIPES[f.id] ? `
+            <div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border)">
+              <div class="text-xs font-bold" style="color:var(--teal);margin-bottom:6px;font-family:'Syne',sans-serif">📋 ${RECIPES[f.id].title}</div>
+              ${RECIPES[f.id].steps.slice(0,3).map((s,i) => `
+                <div style="font-size:11.5px;color:var(--text-secondary);padding:2px 0">
+                  <span style="color:var(--text-muted)">${i+1}.</span> ${s}
+                </div>`).join("")}
+              ${RECIPES[f.id].steps.length > 3 ? `<div class="text-xs text-muted mt-1">+ ${RECIPES[f.id].steps.length-3} more steps</div>` : ""}
+              <div class="research-tag mt-2" style="padding:8px;font-size:11px">💡 ${RECIPES[f.id].tip}</div>
+            </div>` : ""}
+          </div>`).join("")}
+        </div>
+      </div>
+    </div>`).join("")}
+  </div>`;
+}
+
+// ── BIOMARKERS ─────────────────────────────────────────────
+function renderBiomarkers() {
+  return `
+  <div class="page-header animate-up">
+    <div><h1 class="page-title">Blood Test <span>Analysis</span></h1>
+    <p class="page-subtitle">8 mood-critical biomarkers · Enter values for personalised dietary adjustments</p></div>
+  </div>
+  <div class="grid-2 animate-up-delay-1 mb-6">
+    ${BIOMARKERS.map(b => {
+      const val = parseFloat(state.biomarker_vals[b.id]);
+      const hasVal = !isNaN(val);
+      const pct = hasVal ? Math.min(100, (val / b.high) * 100) : 0;
+      const isLow = hasVal && val < b.low;
+      const isSub = hasVal && val >= b.low && val < b.opt_min;
+      const isOpt = hasVal && val >= b.opt_min && val <= b.opt_max;
+      const isHigh = hasVal && val > b.opt_max;
+      const statusColor = isLow ? "var(--coral)" : isSub ? "var(--amber)" : isOpt ? "var(--teal)" : "var(--sky)";
+      const statusLabel = isLow ? "⚠️ Deficient" : isSub ? "↑ Suboptimal" : isOpt ? "✓ Optimal" : "↑ High";
+      return `
+      <div class="biomarker-card">
+        <div class="flex justify-between items-center mb-2">
+          <div class="flex gap-2 items-center">
+            <span style="font-size:20px">${b.emoji}</span>
+            <strong style="font-family:'Syne',sans-serif;font-size:14px">${b.name}</strong>
+          </div>
+          ${hasVal ? `<span class="badge" style="background:rgba(0,0,0,0.2);color:${statusColor};border-color:${statusColor}30">${statusLabel}</span>` : `<span class="badge badge-sage">Not entered</span>`}
+        </div>
+        <div style="font-size:12px;color:var(--text-secondary);margin-bottom:10px">${b.impact}</div>
+        ${hasVal ? `
+        <div class="biomarker-bar">
+          <div class="bm-fill" style="width:${pct}%;background:${statusColor}"></div>
+        </div>
+        <div class="flex justify-between text-xs text-muted mb-2">
+          <span>0 ${b.unit}</span>
+          <span style="color:${statusColor};font-weight:700">${val} ${b.unit}</span>
+          <span>${b.high} ${b.unit}</span>
+        </div>
+        <div style="font-size:11px;background:var(--surface);padding:8px;border-radius:6px;color:var(--text-secondary)">
+          <strong>Optimal range:</strong> ${b.opt_min}–${b.opt_max} ${b.unit}
+        </div>
+        ` : `
+        <input class="input mt-2" id="bm-dash-${b.id}" type="number" step="0.1" placeholder="${b.opt_min}–${b.opt_max} ${b.unit}">
+        <button class="btn btn-secondary mt-2" style="width:100%;padding:8px" data-save-bm="${b.id}">Save Value</button>`}
+        ${(isLow||isSub) ? `
+        <div class="alert alert-warn mt-2" style="font-size:11.5px;padding:10px">
+          🍽️ <strong>Eat more:</strong> ${getBmFoods(b.id, 3)}
+        </div>` : ""}
+      </div>`;
+    }).join("")}
+  </div>`;
+}
+
+function getBmFoods(bmId, n=3) {
+  const bm_foods = {
+    vitamin_d: ["f030","f033","f034","f031"],
+    b12: ["f033","f034","f035","f030","f031"],
+    iron: ["f001","f021","f027","f034"],
+    thyroid_tsh: ["f030","f033","f034"],
+    hba1c: ["f022","f015","f025","f017"],
+    crp: ["f010","f025","f028","f033"],
+    omega3_index: ["f033","f025","f028","f029"],
+    ferritin: ["f001","f021","f023","f034"],
+  };
+  return (bm_foods[bmId]||[]).slice(0,n)
+    .map(id => FOODS_DB.find(f=>f.id===id))
+    .filter(Boolean)
+    .map(f => `${f.emoji} ${f.name}`)
+    .join(", ");
+}
+
+// ── AVOID FOODS ────────────────────────────────────────────
+function renderAvoidFoods() {
+  const avoidMoods = {
+    anxious: [
+      { name:"Caffeine", reason:"Increases cortisol and exacerbates anxiety symptoms", emoji:"☕" },
+      { name:"Alcohol", reason:"Disrupts GABA-glutamate balance; worsens anxiety next day", emoji:"🍷" },
+      { name:"High-GI refined carbs", reason:"Blood sugar spikes → crashes → increased anxiety", emoji:"🍰" },
+      { name:"Energy drinks", reason:"High caffeine + sugar combination triggers anxiety cycles", emoji:"⚡" },
+    ],
+    depressed: [
+      { name:"Refined sugar", reason:"Promotes neuroinflammation; linked to higher depression risk (Knüppel 2017)", emoji:"🍬" },
+      { name:"Trans fats (vanaspati, fried food)", reason:"Blocks omega-3 incorporation into cell membranes", emoji:"🍟" },
+      { name:"Ultra-processed food", reason:"Strong inverse association with brain health (Opie 2017)", emoji:"🍕" },
+      { name:"Alcohol", reason:"Depletes B vitamins, serotonin; worsens depressive episodes", emoji:"🍺" },
+    ],
+    stressed: [
+      { name:"Caffeine (excess)", reason:"Elevates cortisol 30% above baseline for 3+ hours", emoji:"☕" },
+      { name:"Salty processed snacks", reason:"Sodium increases blood pressure, aggravates stress response", emoji:"🧂" },
+      { name:"Alcohol", reason:"Falsely reduces immediate stress while worsening long-term HPA axis", emoji:"🍷" },
+    ],
+    fatigued: [
+      { name:"Simple sugars", reason:"Energy crash 2 hours post-consumption worsens fatigue", emoji:"🍭" },
+      { name:"Excess caffeine", reason:"Interrupts adenosine receptor reset — increases baseline fatigue", emoji:"☕" },
+      { name:"Alcohol", reason:"Disrupts deep (N3) sleep — most restorative sleep phase", emoji:"🍺" },
+    ],
+    brain_fog: [
+      { name:"Gluten (if sensitive)", reason:"Celiac + non-celiac gluten sensitivity linked to brain fog", emoji:"🍞" },
+      { name:"Highly processed foods", reason:"Trans fats and additives impair synaptic plasticity", emoji:"🍔" },
+      { name:"Excess sugar", reason:"Advanced glycation end-products (AGEs) damage neural tissue", emoji:"🍰" },
+    ],
+    irritable: [
+      { name:"High-GI foods", reason:"Blood sugar instability is #1 dietary driver of irritability", emoji:"🍚" },
+      { name:"Caffeine (excess)", reason:"Adenosine blockade reduces frustration tolerance", emoji:"☕" },
+      { name:"Skipping meals", reason:"Even 4-5 hour fasts cause significant mood deterioration", emoji:"⏰" },
+    ],
+  };
+
+  const allAvoid = state.moods.flatMap(m => (avoidMoods[m]||[]).map(a => ({...a, mood:m})));
+  // Deduplicate by name
+  const seen = new Set();
+  const unique = allAvoid.filter(a => { if(seen.has(a.name)) return false; seen.add(a.name); return true; });
+
+  return `
+  <div class="page-header animate-up">
+    <div><h1 class="page-title">Foods to <span>Avoid</span></h1>
+    <p class="page-subtitle">Just as important as what you eat — what to avoid for your current mood state</p></div>
+  </div>
+  ${state.moods.length === 0 ? `
+  <div class="card" style="text-align:center;padding:60px">
+    <div style="font-size:48px;margin-bottom:16px">⊘</div>
+    <p class="text-secondary">Complete mood check-in to see your personalised avoid list</p>
+    <button class="btn btn-primary mt-4" data-page="mood">Check In →</button>
+  </div>` : `
+  <div class="alert alert-warn animate-up mb-6">
+    ⚠️ These foods actively worsen your selected mood states. Avoiding them is as powerful as adding beneficial foods.
+  </div>
+  <div class="grid-2 animate-up-delay-1">
+    ${unique.map(a => `
+    <div style="background:var(--card);border:1px solid rgba(232,115,90,0.2);border-left:3px solid var(--coral);border-radius:var(--radius);padding:18px">
+      <div class="flex gap-3 items-center mb-2">
+        <span style="font-size:28px">${a.emoji}</span>
+        <div>
+          <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:14px">${a.name}</div>
+          <span class="badge badge-coral" style="margin-top:4px">${a.mood}</span>
+        </div>
+      </div>
+      <div style="font-size:13px;color:var(--text-secondary);line-height:1.6">${a.reason}</div>
+    </div>`).join("")}
+  </div>
+  <div class="card mt-6 animate-up-delay-2">
+    <h3 style="font-size:18px;margin-bottom:16px">Healthier Swaps</h3>
+    <div class="grid-2">
+      ${[
+        { avoid:"Energy drink", swap:"Matcha latte", reason:"L-theanine gives calm focus without anxiety spike", from:"☕", to:"🍵" },
+        { avoid:"White rice", swap:"Brown rice / Quinoa", reason:"Lower GI prevents mood crash; higher GABA content", from:"🍚", to:"🌾" },
+        { avoid:"Chips & namkeen", swap:"Mixed nuts + seeds", reason:"Omega-3, magnesium vs empty calories + sodium", from:"🍟", to:"🌰" },
+        { avoid:"Maida biscuits", swap:"Ragi/oat cookies", reason:"Whole grain complex carbs vs blood sugar spikes", from:"🍪", to:"🌾" },
+        { avoid:"Soft drinks", swap:"Coconut water + lemon", reason:"Natural electrolytes; potassium + magnesium for mood", from:"🥤", to:"🥥" },
+        { avoid:"Instant noodles", swap:"Moong dal cheela", reason:"Folate-rich, GABA + protein vs refined empty carbs", from:"🍜", to:"🟢" },
+      ].map(s => `
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px">
+        <div class="flex gap-2 items-center mb-2">
+          <span style="font-size:16px;opacity:0.5">${s.from}</span>
+          <span style="color:var(--text-muted);font-size:12px">→</span>
+          <span style="font-size:16px">${s.to}</span>
+          <div>
+            <span style="font-size:11px;color:var(--coral);text-decoration:line-through">${s.avoid}</span>
+            <span style="font-size:11px;color:var(--teal);margin-left:4px">→ ${s.swap}</span>
+          </div>
+        </div>
+        <div style="font-size:12px;color:var(--text-secondary)">${s.reason}</div>
+      </div>`).join("")}
+    </div>
+  </div>`}`;
+}
+
+// ── RESEARCH LIBRARY ────────────────────────────────────────
+function renderResearch() {
+  const papers = [
+    { title:"A randomised controlled trial of dietary improvement for adults with major depression (SMILES Trial)", authors:"Jacka FN et al.", journal:"BMC Medicine", year:"2017", key:"32% reduction in depression scores with Mediterranean-style diet vs social support group", impact:"HIGH — First RCT proving diet improves clinical depression", color:"var(--teal)" },
+    { title:"Food and mood: how do diet and nutrition affect mental wellbeing?", authors:"Firth J et al.", journal:"BMJ", year:"2020", key:"Comprehensive review of 41 meta-analyses linking diet quality to mental health outcomes", impact:"HIGH — Foundational review paper", color:"var(--amber)" },
+    { title:"Nutritional psychiatry: the present state of the evidence", authors:"Marx W et al.", journal:"Proceedings of the Nutrition Society", year:"2021", key:"Evidence synthesis for omega-3, B12, folate, Vitamin D and zinc in mental health", impact:"HIGH — Current consensus paper", color:"var(--lavender)" },
+    { title:"Curcumin in depression: a meta-analysis of randomised controlled trials", authors:"Sanmukhani J et al.", journal:"Phytotherapy Research", year:"2014", key:"30mg/day saffron and curcumin equivalent to standard antidepressants in mild-moderate depression", impact:"MEDIUM — Specific nutrient RCT", color:"var(--coral)" },
+    { title:"Effects of omega-3 fatty acids on anxiety and depression", authors:"Sublette ME et al.", journal:"Journal of Clinical Psychiatry", year:"2011", key:"EPA supplementation >60% of total EPA+DHA significantly reduces depression (meta-analysis, n=13,000+)", impact:"HIGH — Omega-3 mechanism validated", color:"var(--teal)" },
+    { title:"The gut microbiome in mental health", authors:"Foster JA & McVey Neufeld KA", journal:"Trends in Neurosciences", year:"2017", key:"Vagus nerve as primary communication channel between gut microbiome and brain mood centres", impact:"HIGH — Gut-brain axis mechanism", color:"var(--sky)" },
+    { title:"Ashwagandha root extract reduces stress in chronically stressed adults (KSM-66 RCT)", authors:"Chandrasekhar K et al.", journal:"Indian Journal of Psychological Medicine", year:"2012", key:"27.9% reduction in serum cortisol; 44% reduction in PSS stress scores vs placebo", impact:"MEDIUM — Adaptogen mechanism", color:"var(--sage)" },
+    { title:"NIMHANS National Mental Health Survey 2015-16", authors:"Murthy RS et al.", journal:"NIMHANS, Bangalore", year:"2016", key:"197M Indians (15%) affected by mental disorders; 80% treatment gap; depression #1 cause of disability in women", impact:"HIGH — India-specific epidemiology", color:"var(--amber)" },
+  ];
+
+  return `
+  <div class="page-header animate-up">
+    <div><h1 class="page-title">Research <span>Library</span></h1>
+    <p class="page-subtitle">Peer-reviewed nutritional psychiatry science that powers NutriMind's algorithm</p></div>
+    <span class="badge badge-teal">8 Key Papers</span>
+  </div>
+  <div class="alert alert-info animate-up mb-6">
+    🔬 NutriMind is grounded in nutritional psychiatry — a field of evidence-based medicine that directly maps dietary patterns to neurotransmitter production, neuroinflammation, and mental health outcomes.
+  </div>
+  <div style="display:flex;flex-direction:column;gap:12px;animate-up-delay-1">
+    ${papers.map((p,i) => `
+    <div class="card" style="border-left:3px solid ${p.color}">
+      <div class="flex justify-between items-start mb-2">
+        <div style="font-family:'Syne',sans-serif;font-size:10px;color:var(--text-muted);letter-spacing:1px">PAPER ${String(i+1).padStart(2,'0')}</div>
+        <span class="badge" style="background:${p.color}20;color:${p.color};border-color:${p.color}30">${p.impact}</span>
+      </div>
+      <h3 style="font-size:15px;line-height:1.4;margin-bottom:6px">${p.title}</h3>
+      <div style="font-size:12px;color:var(--text-muted);margin-bottom:10px">
+        ${p.authors} · <em>${p.journal}</em> · ${p.year}
+      </div>
+      <div class="research-tag">
+        <strong>Key finding:</strong> ${p.key}
+      </div>
+    </div>`).join("")}
+  </div>`;
+}
+
+// ════════════════════════════════════════════════════════════
+// FOOD DETAIL MODAL
+// ════════════════════════════════════════════════════════════
+function renderFoodModal(food) {
+  const gi = getGIClass(food.gi);
+  const recipe = RECIPES[food.id];
+  const hasInteraction = food.drug_int && state.medications.includes(food.drug_int);
+
+  return `
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal">
+      <div class="flex justify-between items-start mb-6">
+        <div class="flex gap-4 items-center">
+          <span style="font-size:48px">${food.emoji}</span>
+          <div>
+            <h2 style="font-size:24px">${food.name}</h2>
+            <div class="flex gap-2 mt-2 flex-wrap">
+              <span class="badge badge-sage">${food.cat}</span>
+              <span class="gi-pill ${gi.cls}">${gi.label}</span>
+              ${food.score > 0 ? `<span class="badge badge-teal">Match: ${food.score}%</span>` : ""}
+            </div>
+          </div>
+        </div>
+        <button onclick="document.getElementById('modal-overlay').remove()" style="background:var(--surface);border:1px solid var(--border);width:32px;height:32px;border-radius:50%;cursor:pointer;color:var(--text-secondary);font-size:16px">×</button>
+      </div>
+
+      ${hasInteraction ? `
+      <div class="alert alert-danger mb-4">
+        ⚠️ <strong>Drug Interaction:</strong> You listed ${food.drug_int} as a medication. Consult your doctor about this food.
+      </div>` : ""}
+
+      <div class="grid-4 mb-6">
+        ${[["Calories",food.cal,"kcal"],["Protein",food.pro,"g"],["Carbs",food.carb,"g"],["Fiber",food.fib,"g"]].map(([l,v,u]) => `
+        <div class="stat-box" style="padding:12px;text-align:center">
+          <div class="stat-label" style="text-align:center">${l}</div>
+          <div style="font-family:'DM Serif Display',serif;font-size:20px">${v}</div>
+          <div class="text-xs text-muted">${u}</div>
+        </div>`).join("")}
+      </div>
+
+      <div class="mb-6">
+        <h4 style="font-family:'Syne',sans-serif;font-size:13px;margin-bottom:10px;color:var(--text-secondary)">KEY NUTRIENTS</h4>
+        <div style="display:flex;flex-wrap:wrap;gap:6px">
+          ${(food.key_nutrients||[]).map(n => `<span class="badge badge-teal">${n}</span>`).join("")}
+        </div>
+      </div>
+
+      <div class="mb-6">
+        <h4 style="font-family:'Syne',sans-serif;font-size:13px;margin-bottom:10px;color:var(--text-secondary)">MOOD BENEFITS</h4>
+        <div style="display:flex;flex-wrap:wrap;gap:6px">
+          ${(food.mood_boost||[]).map(m => {
+            const mood = MOODS.find(x=>x.id===m);
+            return `<span class="mood-chip" style="padding:6px 12px;font-size:12px;cursor:default">${mood?.emoji||""} ${mood?.label||m}</span>`;
+          }).join("")}
+        </div>
+        ${(food.mood_avoid||[]).length > 0 ? `
+        <div class="mt-3">
+          <div class="text-xs text-muted mb-2">CAUTION FOR:</div>
+          ${food.mood_avoid.map(m => {
+            const mood = MOODS.find(x=>x.id===m);
+            return `<span class="badge badge-coral" style="margin-right:6px">${mood?.emoji||""} ${mood?.label||m}</span>`;
+          }).join("")}
+        </div>` : ""}
+      </div>
+
+      <div class="research-tag mb-6">
+        <strong>Research basis:</strong> ${food.research}
+      </div>
+
+      ${food.avoid_if && food.avoid_if.length > 0 ? `
+      <div class="alert alert-warn mb-6" style="font-size:12.5px">
+        ⚠️ <strong>Avoid if:</strong> ${food.avoid_if.map(c => c.replace(/_/g," ")).join(", ")}
+      </div>` : ""}
+
+      ${recipe ? `
+      <div style="border-top:1px solid var(--border);padding-top:20px">
+        <div class="flex justify-between items-center mb-4">
+          <h3 style="font-size:16px">📋 ${recipe.title}</h3>
+          <span class="badge badge-sage">⏱ ${recipe.time} min</span>
+        </div>
+        <ol style="padding-left:20px">
+          ${recipe.steps.map(s => `<li style="font-size:13.5px;color:var(--text-secondary);padding:5px 0;line-height:1.5">${s}</li>`).join("")}
+        </ol>
+        <div class="research-tag mt-4" style="padding:10px">
+          💡 <strong>Pro tip:</strong> ${recipe.tip}
+        </div>
+      </div>` : ""}
+    </div>
+  </div>`;
+}
+
+// ════════════════════════════════════════════════════════════
+// HELPER FUNCTIONS
+// ════════════════════════════════════════════════════════════
+function classifyProfile() {
+  const profiles = {
+    depressed: { label:"Neurotransmitter Depleted", emoji:"🔵" },
+    anxious: { label:"Stress Reactive", emoji:"🟡" },
+    stressed: { label:"Cortisol Dysregulated", emoji:"🟠" },
+    fatigued: { label:"Energy Deficient", emoji:"🔴" },
+    brain_fog: { label:"Neuroinflammatory", emoji:"🟣" },
+    irritable: { label:"Glycemic Unstable", emoji:"🟤" },
+  };
+  if (!state.moods.length) return { label:"Balanced", emoji:"🟢" };
+  const counts = {};
+  state.moods.forEach(m => { counts[m] = (counts[m]||0) + 1; });
+  const top = Object.entries(counts).sort((a,b)=>b[1]-a[1])[0];
+  return profiles[top[0]] || { label:"Mixed Profile", emoji:"⚪" };
+}
+
+function getDeficiencies() {
+  return BIOMARKERS.filter(b => {
+    const v = parseFloat(state.biomarker_vals[b.id]);
+    return !isNaN(v) && v < b.low;
+  });
+}
+
+function getDrugWarnings() {
+  const warnings = {
+    warfarin: "Warfarin + Vitamin K foods (spinach, broccoli) — monitor INR carefully",
+    maois: "MAOIs + tyramine foods (banana, dark chocolate) — risk of hypertensive crisis",
+    blood_thinners: "Blood thinners + omega-3 foods — may increase bleeding risk",
+    statins: "Statins + pomegranate — may increase statin levels",
+  };
+  return state.medications.flatMap(m => warnings[m] ? [warnings[m]] : []);
+}
+
+function getTimeOfDay() {
+  const h = new Date().getHours();
+  return h < 12 ? "morning" : h < 17 ? "afternoon" : "evening";
+}
+
+function calculateTDEE(bmi, age, gender) {
+  const weight = bmi ? bmi * (1.65**2) : 65;
+  const height = 165;
+  if (gender === "male") return Math.round((10*weight + 6.25*height - 5*age + 5) * 1.375);
+  return Math.round((10*weight + 6.25*height - 5*age - 161) * 1.375);
+}
+
+function animateNumbers() {
+  document.querySelectorAll("[data-countup]").forEach(el => {
+    const target = parseInt(el.dataset.countup);
+    if (!target) return;
+    let current = 0;
+    const step = Math.ceil(target / 20);
+    const timer = setInterval(() => {
+      current = Math.min(current + step, target);
+      el.textContent = current;
+      if (current >= target) clearInterval(timer);
+    }, 50);
+  });
+}
+
+// ════════════════════════════════════════════════════════════
+// EVENT HANDLING
+// ════════════════════════════════════════════════════════════
+function attachEvents() {
+  // Onboarding navigation
+  const nextBtn = document.getElementById("ob-next");
+  if (nextBtn) nextBtn.addEventListener("click", () => {
+    if (state.ob_step === 1) {
+      setState({ profile: {
+        name: document.getElementById("inp-name")?.value || "",
+        age: parseInt(document.getElementById("inp-age")?.value) || 22,
+        gender: document.getElementById("inp-gender")?.value || "female",
+        diet: document.getElementById("inp-diet")?.value || "vegetarian",
+        bmi: parseFloat(document.getElementById("inp-bmi")?.value) || null,
+      }});
+    } else if (state.ob_step === 3) {
+      // nothing to save — already saved on click
+    } else if (state.ob_step === 4) {
+      // Save biomarker values
+      const bv = {};
+      BIOMARKERS.forEach(b => {
+        const v = document.getElementById(`bm-${b.id}`)?.value;
+        if (v) bv[b.id] = v;
+      });
+      // Generate recommendations
+      const recs = recommendFoods(state.moods, state.profile.diet, state.conditions, state.medications, bv, state.profile.bmi);
+      const plan = buildMealPlan(recs, state.profile.diet, state.moods);
+      setState({ biomarker_vals: bv, recommendations: recs, mealPlan: plan, page: "dashboard", ob_step: 1 });
+      return;
+    }
+    if (state.ob_step < 4) setState({ ob_step: state.ob_step + 1 });
+  });
+
+  const backBtn = document.getElementById("ob-back");
+  if (backBtn) backBtn.addEventListener("click", () => {
+    if (state.ob_step > 1) setState({ ob_step: state.ob_step - 1 });
+  });
+
+  // Mood chips (onboarding + mood page)
+  document.querySelectorAll("[data-mood]").forEach(el => {
+    el.addEventListener("click", () => {
+      const m = el.dataset.mood;
+      const moods = state.moods.includes(m)
+        ? state.moods.filter(x => x !== m)
+        : [...state.moods, m];
+      setState({ moods });
+    });
+  });
+
+  // Condition chips
+  document.querySelectorAll("[data-condition]").forEach(el => {
+    el.addEventListener("click", () => {
+      const c = el.dataset.condition;
+      const conditions = state.conditions.includes(c)
+        ? state.conditions.filter(x => x !== c)
+        : [...state.conditions, c];
+      setState({ conditions });
+    });
+  });
+
+  // Medication chips
+  document.querySelectorAll("[data-medication]").forEach(el => {
+    el.addEventListener("click", () => {
+      const m = el.dataset.medication;
+      const meds = state.medications.includes(m)
+        ? state.medications.filter(x => x !== m)
+        : [...state.medications, m];
+      setState({ medications: meds });
+    });
+  });
+
+  // Nav
+  document.querySelectorAll("[data-page]").forEach(el => {
+    el.addEventListener("click", () => setState({ page: el.dataset.page }));
+  });
+
+  // Tabs
+  document.querySelectorAll("[data-tab]").forEach(el => {
+    el.addEventListener("click", () => setState({ activeTab: el.dataset.tab }));
+  });
+
+  // Generate plan button
+  const genBtn = document.getElementById("generate-plan");
+  if (genBtn) genBtn.addEventListener("click", () => {
+    const recs = recommendFoods(state.moods, state.profile.diet, state.conditions, state.medications, state.biomarker_vals, state.profile.bmi);
+    const plan = buildMealPlan(recs, state.profile.diet, state.moods);
+    setState({ recommendations: recs, mealPlan: plan, page: "recommendations" });
+  });
+
+  // Food cards → modal
+  document.querySelectorAll("[data-food]").forEach(el => {
+    el.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const food = FOODS_DB.find(f => f.id === el.dataset.food);
+      if (!food) return;
+      const existing = document.getElementById("modal-overlay");
+      if (existing) existing.remove();
+      const scored = state.recommendations.find(r => r.id === food.id);
+      document.body.insertAdjacentHTML("beforeend", renderFoodModal(scored || food));
+      document.getElementById("modal-overlay").addEventListener("click", e => {
+        if (e.target.id === "modal-overlay") document.getElementById("modal-overlay").remove();
+      });
+    });
+  });
+
+  // Save biomarker from dashboard
+  document.querySelectorAll("[data-save-bm]").forEach(el => {
+    el.addEventListener("click", () => {
+      const id = el.dataset.saveBm;
+      const val = document.getElementById(`bm-dash-${id}`)?.value;
+      if (val) {
+        const bv = { ...state.biomarker_vals, [id]: val };
+        const recs = recommendFoods(state.moods, state.profile.diet, state.conditions, state.medications, bv, state.profile.bmi);
+        const plan = buildMealPlan(recs, state.profile.diet, state.moods);
+        setState({ biomarker_vals: bv, recommendations: recs, mealPlan: plan });
+      }
+    });
+  });
+}
+
+// ════════════════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════════════════
+render();
+</script>
+</body>
+</html>
